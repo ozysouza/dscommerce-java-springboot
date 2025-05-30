@@ -43,6 +43,10 @@ public class Payment {
         return paymentTime;
     }
 
+    public void setPaymentTime(Instant paymentTime) {
+        this.paymentTime = paymentTime;
+    }
+
     public Order getOrder() {
         return order;
     }
