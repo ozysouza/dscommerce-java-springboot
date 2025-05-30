@@ -3,6 +3,7 @@ package com.desouza.dscommerce.entities;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -94,6 +95,21 @@ public class Order {
 
     public List<Product> getProducts() {
         return items.stream().map(x -> x.getProduct()).toList();
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Order order = (Order) obj;
+        return Objects.equals(id, order.id);
     }
 
 }
