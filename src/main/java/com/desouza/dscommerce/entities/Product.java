@@ -86,4 +86,8 @@ public class Product {
         return categories;
     }
 
+    public Set<OrderItem> getOrderItems() {
+        return items;
+    }
+
 }
