@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -56,6 +57,11 @@ public class Order {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = Instant.now();
     }
 
     public OrderStatus getStatus() {
