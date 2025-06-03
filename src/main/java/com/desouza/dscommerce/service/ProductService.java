@@ -19,6 +19,11 @@ public class ProductService {
     private ProductRepository repository;
 
     @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
         dtoToEntity(dto, entity);
