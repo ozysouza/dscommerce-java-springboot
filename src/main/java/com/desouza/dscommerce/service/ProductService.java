@@ -45,10 +45,14 @@ public class ProductService {
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
-        Product entity = repository.getReferenceById(id);
-        dtoToEntity(dto, entity);
-        entity = repository.save(entity);
-        return new ProductDTO(entity);
+        try {
+            Product entity = repository.getReferenceById(id);
+            dtoToEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ProductDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource Not Found!");
+        }
     }
 
     private void dtoToEntity(ProductDTO dto, Product entity) {
