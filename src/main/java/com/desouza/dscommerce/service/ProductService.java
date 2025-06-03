@@ -9,8 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.desouza.dscommerce.dto.ProductDTO;
 import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.repositories.ProductRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -40,7 +39,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Product product = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product with ID " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
         return new ProductDTO(product);
     }
 
