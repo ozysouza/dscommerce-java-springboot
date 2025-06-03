@@ -1,15 +1,20 @@
 package com.desouza.dscommerce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.dto.ProductDTO;
 import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.repositories.ProductRepository;
+import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -17,9 +22,16 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        repository.deleteById(id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Resource Not Found!");
+        }
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Referential integrity constraint violation");
+        }
     }
 
     @Transactional
@@ -39,7 +51,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Product product = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Resource Not Found!"));
         return new ProductDTO(product);
     }
 
