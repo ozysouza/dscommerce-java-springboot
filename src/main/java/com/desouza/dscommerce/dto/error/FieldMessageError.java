@@ -1,11 +1,11 @@
-package com.desouza.dscommerce.dto;
+package com.desouza.dscommerce.dto.error;
 
-public class FieldMessage {
+public class FieldMessageError {
 
     private String fieldName;
     private String message;
 
-    public FieldMessage(String fieldName, String message) {
+    public FieldMessageError(String fieldName, String message) {
         this.fieldName = fieldName;
         this.message = message;
     }

@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.dto;
+package com.desouza.dscommerce.dto.error;
 
 import java.time.Instant;
 

@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.dto;
+package com.desouza.dscommerce.dto.error;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -6,18 +6,18 @@ import java.util.List;
 
 public class ValidationError extends CustomError {
 
-    private List<FieldMessage> erros = new ArrayList<>();
+    private List<FieldMessageError> errors = new ArrayList<>();
 
     public ValidationError(String error, Integer status, String path, Instant timestamp) {
         super(error, status, path, timestamp);
     }
 
-    public List<FieldMessage> getErros() {
-        return erros;
+    public List<FieldMessageError> getErros() {
+        return errors;
     }
 
     public void addError(String fieldName, String message) {
-        erros.add(new FieldMessage(fieldName, message));
+        errors.add(new FieldMessageError(fieldName, message));
     }
 
 }
