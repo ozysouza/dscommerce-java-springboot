@@ -50,9 +50,12 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
-        Product product = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resource Not Found!"));
-        return new ProductDTO(product);
+        try {
+            Product product = repository.searchById(id);
+            return new ProductDTO(product);
+        } catch (NullPointerException e) {
+            throw new ResourceNotFoundException("Product with ID " + id + " was not found");
+        }
     }
 
     @Transactional
