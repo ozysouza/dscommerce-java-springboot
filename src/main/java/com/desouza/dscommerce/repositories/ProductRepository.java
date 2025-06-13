@@ -1,7 +1,7 @@
 package com.desouza.dscommerce.repositories;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,7 +16,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             """)
     Product searchById(Long id);
 
-    @Query("SELECT obj FROM Product obj WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))")
-    Page<Product> searchByName(String name, Pageable pageable);
+    @Query("""
+            SELECT obj FROM Product obj JOIN FETCH obj.categories
+            WHERE obj IN :products
+            AND UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))
+            """)
+    List<Product> searchProductsCategories(List<Product> products, String name);
 
 }

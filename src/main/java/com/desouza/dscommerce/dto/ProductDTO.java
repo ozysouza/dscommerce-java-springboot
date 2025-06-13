@@ -1,5 +1,9 @@
 package com.desouza.dscommerce.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.desouza.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
@@ -19,15 +23,19 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
+    private List<CategoryDTO> categories = new ArrayList<>();
+
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
+    public ProductDTO(Long id, String name, String description, Double price, String imgUrl,
+            List<CategoryDTO> categories) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+        this.categories = categories;
     }
 
     public ProductDTO(Product entity) {
@@ -36,6 +44,7 @@ public class ProductDTO {
         description = entity.getDescription();
         price = entity.getPrice();
         imgUrl = entity.getImgUrl();
+        categories = entity.getCategories().stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -56,6 +65,10 @@ public class ProductDTO {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 
 }
