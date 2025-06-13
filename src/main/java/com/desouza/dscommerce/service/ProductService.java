@@ -22,15 +22,15 @@ import jakarta.persistence.EntityNotFoundException;
 public class ProductService {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductRepository productRepository;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        if (!repository.existsById(id)) {
+        if (!productRepository.existsById(id)) {
             throw new ResourceNotFoundException("Resource Not Found!");
         }
         try {
-            repository.deleteById(id);
+            productRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new DataBaseException("Referential integrity constraint violation");
         }
@@ -40,21 +40,21 @@ public class ProductService {
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
         dtoToEntity(dto, entity);
-        entity = repository.save(entity);
+        entity = productRepository.save(entity);
         return new ProductDTO(entity);
     }
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(String name, Pageable pageable) {
-        Page<Product> result = repository.findAll(pageable);
-        repository.searchProductsCategories(result.stream().collect(Collectors.toList()), name);
+        Page<Product> result = productRepository.findAll(pageable);
+        productRepository.searchProductsCategories(result.stream().collect(Collectors.toList()), name);
         return result.map(x -> new ProductDTO(x));
     }
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         try {
-            Product product = repository.searchById(id);
+            Product product = productRepository.searchById(id);
             return new ProductDTO(product);
         } catch (NullPointerException e) {
             throw new ResourceNotFoundException("Product with ID " + id + " was not found");
@@ -64,9 +64,9 @@ public class ProductService {
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
         try {
-            Product entity = repository.getReferenceById(id);
+            Product entity = productRepository.getReferenceById(id);
             dtoToEntity(dto, entity);
-            entity = repository.save(entity);
+            entity = productRepository.save(entity);
             return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource Not Found!");
