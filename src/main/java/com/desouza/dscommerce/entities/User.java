@@ -99,6 +99,19 @@ public class User {
         return orders;
     }
 
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public boolean hasRole(String roleName) {
+        for (Role role : roles) {
+            if (role.getAuthority().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
