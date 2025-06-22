@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.desouza.dscommerce.dto.UserDTO;
 import com.desouza.dscommerce.entities.Role;
 import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.projections.UserDetailsProjection;
@@ -50,6 +52,12 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             throw new UsernameNotFoundException("User not found");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO getMe() {
+        User user = authenticated();
+        return new UserDTO(user);
     }
 
 }
