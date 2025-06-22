@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.desouza.dscommerce.dto.CategoryDTO;
 import com.desouza.dscommerce.dto.ProductDTO;
+import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.entities.Product;
+import com.desouza.dscommerce.repositories.CategoryRepository;
 import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
@@ -21,6 +24,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
@@ -38,6 +44,12 @@ public class ProductService {
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
         dtoToEntity(dto, entity);
+
+        for (CategoryDTO catDTO : dto.getCategories()) {
+            Category cat = categoryRepository.getReferenceById(catDTO.getId());
+            entity.getCategories().add(cat);
+        }
+
         entity = productRepository.save(entity);
         return new ProductDTO(entity);
     }
