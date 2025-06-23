@@ -45,12 +45,6 @@ public class ProductService {
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
         dtoToEntity(dto, entity);
-
-        for (CategoryDTO catDTO : dto.getCategories()) {
-            Category cat = categoryRepository.getReferenceById(catDTO.getId());
-            entity.getCategories().add(cat);
-        }
-
         entity = productRepository.save(entity);
         return new ProductDTO(entity);
     }
@@ -88,6 +82,12 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+
+        entity.getCategories().clear();
+        for (CategoryDTO catDTO : dto.getCategories()) {
+            Category cat = categoryRepository.getReferenceById(catDTO.getId());
+            entity.getCategories().add(cat);
+        }
     }
 
 }
