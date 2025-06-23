@@ -8,6 +8,7 @@ import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -24,6 +25,7 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
+    @NotEmpty(message = "Product must have at least one category")
     private List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {
