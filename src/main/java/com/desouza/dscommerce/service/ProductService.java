@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.dto.CategoryDTO;
+import com.desouza.dscommerce.dto.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.ProductDTO;
 import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.entities.Product;
@@ -55,9 +56,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductCatalogDTO> findCatalogProducts(String name, Pageable pageable) {
         Page<Product> result = productRepository.searchProductsCategories(pageable, name);
-        return result.map(x -> new ProductDTO(x));
+        return result.map(x -> new ProductCatalogDTO(x));
     }
 
     @Transactional(readOnly = true)
