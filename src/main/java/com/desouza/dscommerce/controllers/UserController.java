@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.desouza.dscommerce.dto.UserDTO;
+import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.service.UserService;
 
 @RestController

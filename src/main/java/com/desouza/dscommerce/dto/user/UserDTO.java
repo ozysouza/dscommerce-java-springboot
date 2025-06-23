@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.dto;
+package com.desouza.dscommerce.dto.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

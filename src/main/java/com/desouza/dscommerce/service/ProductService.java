@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.desouza.dscommerce.dto.CategoryDTO;
-import com.desouza.dscommerce.dto.ProductCatalogDTO;
-import com.desouza.dscommerce.dto.ProductDTO;
+import com.desouza.dscommerce.dto.category.CategoryDTO;
+import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
+import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.repositories.CategoryRepository;

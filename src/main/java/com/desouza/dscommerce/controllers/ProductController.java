@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.desouza.dscommerce.dto.ProductCatalogDTO;
-import com.desouza.dscommerce.dto.ProductDTO;
+import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
+import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.service.ProductService;
 
 import jakarta.validation.Valid;

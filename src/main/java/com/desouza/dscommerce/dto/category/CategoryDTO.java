@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.dto;
+package com.desouza.dscommerce.dto.category;
 
 import com.desouza.dscommerce.entities.Category;
 

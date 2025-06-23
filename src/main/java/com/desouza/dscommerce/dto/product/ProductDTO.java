@@ -1,9 +1,10 @@
-package com.desouza.dscommerce.dto;
+package com.desouza.dscommerce.dto.product;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
