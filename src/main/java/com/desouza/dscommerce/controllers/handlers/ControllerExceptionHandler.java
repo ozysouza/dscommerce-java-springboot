@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.desouza.dscommerce.dto.error.CustomError;
 import com.desouza.dscommerce.dto.error.ValidationError;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
+import com.desouza.dscommerce.service.exceptions.ForbiddenException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomError> methodArgumentNotValidException(MethodArgumentNotValidException e,
+    public ResponseEntity<CustomError> methodArgumentNotValid(MethodArgumentNotValidException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError err = new ValidationError("Invalid data", status.value(), request.getRequestURI(),
@@ -45,4 +46,12 @@ public class ControllerExceptionHandler {
         }
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError err = new CustomError(e.getMessage(), status.value(), request.getRequestURI(), Instant.now());
+        return ResponseEntity.status(status).body(err);
+    }
+
 }
