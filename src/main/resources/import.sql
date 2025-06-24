@@ -59,9 +59,9 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES (25, 3);
 INSERT INTO tb_user (name, email, phone, password, birth_date) VALUES ('Maria Brown', 'maria@gmail.com', '988888888', '$2a$10$hekAig9V0rG/0/Svd5m6..7sl3hQmVhBwqaNmbf9zfEsj6brViBfC', '2001-07-25');
 INSERT INTO tb_user (name, email, phone, password, birth_date) VALUES ('Alex Green', 'alex@gmail.com', '977777777', '$2a$10$hekAig9V0rG/0/Svd5m6..7sl3hQmVhBwqaNmbf9zfEsj6brViBfC', '1987-12-13');
 
-INSERT INTO tb_order (status, client_id) VALUES (1, 1);
-INSERT INTO tb_order (status, client_id) VALUES (3, 2);
-INSERT INTO tb_order (status, client_id) VALUES (0, 1);
+INSERT INTO tb_order (status, client_id, created_at) VALUES (1, 1, TIMESTAMP WITH TIME ZONE '2022-02-01T15:00:00Z');
+INSERT INTO tb_order (status, client_id, created_at) VALUES (3, 2, TIMESTAMP WITH TIME ZONE '2022-06-15T15:00:00Z');
+INSERT INTO tb_order (status, client_id, created_at) VALUES (0, 1, TIMESTAMP WITH TIME ZONE '2022-05-10T15:00:00Z');
 
 INSERT INTO tb_order_item (order_id, product_id, quantity, price) VALUES (1, 1, 2, 90.5);
 INSERT INTO tb_order_item (order_id, product_id, quantity, price) VALUES (1, 3, 1, 1250.0);
