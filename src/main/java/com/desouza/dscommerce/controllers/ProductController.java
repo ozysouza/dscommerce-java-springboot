@@ -25,7 +25,7 @@ import com.desouza.dscommerce.service.ProductService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/v1/products")
+@RequestMapping(value = "/products")
 public class ProductController {
 
     @Autowired

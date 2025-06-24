@@ -19,7 +19,7 @@ import com.desouza.dscommerce.service.OrderService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/v1/orders")
+@RequestMapping(value = "/orders")
 public class OrderController {
 
     @Autowired

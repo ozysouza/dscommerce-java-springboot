@@ -11,7 +11,7 @@ import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.service.UserService;
 
 @RestController
-@RequestMapping(value = "/v1/users")
+@RequestMapping(value = "/users")
 public class UserController {
 
     @Autowired
