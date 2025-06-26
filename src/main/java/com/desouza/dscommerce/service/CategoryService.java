@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.repositories.CategoryRepository;
+import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -28,5 +31,17 @@ public class CategoryService {
         category.setName(dto.getName());
         category = categoryRepository.save(category);
         return new CategoryDTO(category);
+    }
+
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        try {
+            Category category = categoryRepository.getReferenceById(id);
+            category.setName(dto.getName());
+            category = categoryRepository.save(category);
+            return new CategoryDTO(category);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Category with ID " + id + " was not found");
+        }
     }
 }

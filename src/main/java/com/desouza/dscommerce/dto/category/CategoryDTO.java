@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 public class CategoryDTO {
 
     private Long id;
-    @Size(min = 3, max = 15, message = "Name must be between 3 and 15 characters")
+    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
     @NotBlank(message = "Field is required")
     private String name;
 
