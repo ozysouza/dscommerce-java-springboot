@@ -22,4 +22,11 @@ public class CategoryService {
         return result.stream().map(x -> new CategoryDTO(x)).toList();
     }
 
+    @Transactional
+    public CategoryDTO insert(CategoryDTO dto) {
+        Category category = new Category();
+        category.setName(dto.getName());
+        categoryRepository.save(category);
+        return new CategoryDTO(category);
+    }
 }
