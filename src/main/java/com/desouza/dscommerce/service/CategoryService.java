@@ -1,6 +1,7 @@
 package com.desouza.dscommerce.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,6 +39,16 @@ public class CategoryService {
     public List<CategoryDTO> findAll() {
         List<Category> result = categoryRepository.findAll();
         return result.stream().map(x -> new CategoryDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryDTO findById(Long id) {
+        try {
+            Category category = categoryRepository.findById(id).get();
+            return new CategoryDTO(category);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Category with ID " + id + " was not found");
+        }
     }
 
     @Transactional
