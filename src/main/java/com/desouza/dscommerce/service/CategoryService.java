@@ -26,7 +26,11 @@ public class CategoryService {
     public CategoryDTO insert(CategoryDTO dto) {
         Category category = new Category();
         category.setName(dto.getName());
+<<<<<<< HEAD
         categoryRepository.save(category);
+=======
+        category = categoryRepository.save(category);
+>>>>>>> 7159716 (Add service and controller to insert category)
         return new CategoryDTO(category);
     }
 }
