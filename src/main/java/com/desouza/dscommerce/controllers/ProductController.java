@@ -34,33 +34,33 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<ProductCatalogDTO>> findCatalogProducts(@RequestParam(defaultValue = "") String name,
             Pageable pageable) {
-        Page<ProductCatalogDTO> dto = productService.findCatalogProducts(name, pageable);
-        return ResponseEntity.ok(dto);
+        Page<ProductCatalogDTO> productCatalogDTO = productService.findCatalogProducts(name, pageable);
+        return ResponseEntity.ok(productCatalogDTO);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-        ProductDTO dto = productService.findById(id);
-        return ResponseEntity.ok(dto);
+        ProductDTO productDTO = productService.findById(id);
+        return ResponseEntity.ok(productDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
-        dto = productService.insert(dto);
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {
+        productDTO = productService.insert(productDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(dto.getId())
+                .buildAndExpand(productDTO.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(dto);
+        return ResponseEntity.created(uri).body(productDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
-        dto = productService.update(id, dto);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
+        productDTO = productService.update(id, productDTO);
+        return ResponseEntity.ok(productDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

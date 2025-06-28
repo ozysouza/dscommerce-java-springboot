@@ -20,8 +20,8 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/me")
     public ResponseEntity<UserDTO> findMe() {
-        UserDTO user = userService.getMe();
-        return ResponseEntity.ok(user);
+        UserDTO userDTO = userService.getMe();
+        return ResponseEntity.ok(userDTO);
     }
 
 }

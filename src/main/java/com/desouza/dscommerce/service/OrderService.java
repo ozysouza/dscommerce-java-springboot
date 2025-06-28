@@ -45,7 +45,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDTO insert(OrderDTO dto) {
+    public OrderDTO insert(OrderDTO orderDTO) {
         Order order = new Order();
         order.setCreatedAt(Instant.now());
         order.setStatus(OrderStatus.WAITING_PAYMENT);
@@ -53,10 +53,10 @@ public class OrderService {
         User user = userService.authenticated();
         order.setClient(user);
 
-        for (OrderItemDTO itemDto : dto.getItems()) {
-            Product product = productRepository.getReferenceById(itemDto.getProductId());
-            OrderItem item = new OrderItem(order, product, itemDto.getQuantity(), product.getPrice());
-            order.getItems().add(item);
+        for (OrderItemDTO orderItemDTO : orderDTO.getItems()) {
+            Product product = productRepository.getReferenceById(orderItemDTO.getProductId());
+            OrderItem orderItem = new OrderItem(order, product, orderItemDTO.getQuantity(), product.getPrice());
+            order.getItems().add(orderItem);
         }
 
         orderRepository.save(order);

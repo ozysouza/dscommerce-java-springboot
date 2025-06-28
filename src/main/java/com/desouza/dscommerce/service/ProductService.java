@@ -42,17 +42,17 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO insert(ProductDTO dto) {
-        Product entity = new Product();
-        dtoToEntity(dto, entity);
-        entity = productRepository.save(entity);
-        return new ProductDTO(entity);
+    public ProductDTO insert(ProductDTO productDTO) {
+        Product product = new Product();
+        dtoToEntity(productDTO, product);
+        product = productRepository.save(product);
+        return new ProductDTO(product);
     }
 
     @Transactional(readOnly = true)
     public Page<ProductCatalogDTO> findCatalogProducts(String name, Pageable pageable) {
-        Page<Product> result = productRepository.searchProductsCategories(pageable, name);
-        return result.map(x -> new ProductCatalogDTO(x));
+        Page<Product> products = productRepository.searchProductsCategories(pageable, name);
+        return products.map(x -> new ProductCatalogDTO(x));
     }
 
     @Transactional(readOnly = true)
@@ -66,27 +66,27 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO update(Long id, ProductDTO dto) {
+    public ProductDTO update(Long id, ProductDTO productDTO) {
         try {
-            Product entity = productRepository.getReferenceById(id);
-            dtoToEntity(dto, entity);
-            entity = productRepository.save(entity);
-            return new ProductDTO(entity);
+            Product product = productRepository.getReferenceById(id);
+            dtoToEntity(productDTO, product);
+            product = productRepository.save(product);
+            return new ProductDTO(product);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource Not Found!");
         }
     }
 
-    private void dtoToEntity(ProductDTO dto, Product entity) {
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setPrice(dto.getPrice());
-        entity.setImgUrl(dto.getImgUrl());
+    private void dtoToEntity(ProductDTO productDTO, Product product) {
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setImgUrl(productDTO.getImgUrl());
 
-        entity.getCategories().clear();
-        for (CategoryDTO catDTO : dto.getCategories()) {
-            Category cat = categoryRepository.getReferenceById(catDTO.getId());
-            entity.getCategories().add(cat);
+        product.getCategories().clear();
+        for (CategoryDTO categoryDTO : productDTO.getCategories()) {
+            Category category = categoryRepository.getReferenceById(categoryDTO.getId());
+            product.getCategories().add(category);
         }
     }
 

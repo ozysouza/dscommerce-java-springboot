@@ -36,27 +36,27 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
-        CategoryDTO dto = categoryService.findById(id);
-        return ResponseEntity.ok(dto);
+        CategoryDTO categoryDTO = categoryService.findById(id);
+        return ResponseEntity.ok(categoryDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO dto) {
-        dto = categoryService.insert(dto);
+    public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO) {
+        categoryDTO = categoryService.insert(categoryDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(dto.getId())
+                .buildAndExpand(categoryDTO.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(dto);
+        return ResponseEntity.created(uri).body(categoryDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
-        dto = categoryService.update(id, dto);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
+        categoryDTO = categoryService.update(id, categoryDTO);
+        return ResponseEntity.ok(categoryDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -37,8 +37,8 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public List<CategoryDTO> findAll() {
-        List<Category> result = categoryRepository.findAll();
-        return result.stream().map(x -> new CategoryDTO(x)).toList();
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(x -> new CategoryDTO(x)).toList();
     }
 
     @Transactional(readOnly = true)
@@ -52,18 +52,18 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryDTO insert(CategoryDTO dto) {
+    public CategoryDTO insert(CategoryDTO categoryDTO) {
         Category category = new Category();
-        category.setName(dto.getName());
+        category.setName(categoryDTO.getName());
         category = categoryRepository.save(category);
         return new CategoryDTO(category);
     }
 
     @Transactional
-    public CategoryDTO update(Long id, CategoryDTO dto) {
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
         try {
             Category category = categoryRepository.getReferenceById(id);
-            category.setName(dto.getName());
+            category.setName(categoryDTO.getName());
             category = categoryRepository.save(category);
             return new CategoryDTO(category);
         } catch (EntityNotFoundException e) {
