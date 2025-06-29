@@ -104,12 +104,14 @@ To use it:
 - Open Postman
 - Import the collection file
 - Set your environment variables or replace token placeholders manually
-![postmancollection](https://github.com/user-attachments/assets/107af7e7-90ec-45d8-84dc-760106f363b3)
+  
+![postmancollection](https://github.com/user-attachments/assets/eb3cc69c-0d03-41cb-9b89-b0d5f5a2d653)
+
 
 ### Work in Progress 🚧
 The following features are still in progress:
 
- - Create/Delete/Update Categories
+ <s>- Create/Delete/Update Categories</s>
  - Create/Delete/Update Users
  - Delete/Update Orders
 
