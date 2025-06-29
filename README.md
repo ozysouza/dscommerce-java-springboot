@@ -67,7 +67,20 @@ This API uses **JWT** for stateless authentication.
 - Use this token in the `Authorization` header as `Bearer <token>` for all secured endpoints
 - Roles are used to restrict access (e.g., `ROLE_ADMIN`, `ROLE_CLIENT`)
 
----
+--
+
+## 🔍 Query Parameters
+📄 Pagination Support
+This API supports pagination for endpoints that return large lists (e.g., products, categories). It follows Spring Data’s standard pagination mechanism.
+
+You can customize the paginated responses using the following query parameters:
+
+## Parameter	Description	Example
+- page	Page number (0-based index)	?page=0
+- size	Number of items per page	?size=10
+- sort	Sorting criteria in the format `asc	desc`
+- You can chain multiple sort params	?sort=name,asc&sort=price,desc
+
 
 ## 🚀 Getting Started
 
