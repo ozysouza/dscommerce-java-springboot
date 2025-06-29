@@ -10,9 +10,9 @@ import com.desouza.dscommerce.entities.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(nativeQuery = true, value = """
-            SELECT p.id, p.name, p.description, p.price, p.img_url
-            FROM tb_product p
-            WHERE p.id = :id
+            SELECT tb_product.*
+            FROM tb_product 
+            WHERE tb_product.id = :id
             """)
     Product searchById(Long id);
 
