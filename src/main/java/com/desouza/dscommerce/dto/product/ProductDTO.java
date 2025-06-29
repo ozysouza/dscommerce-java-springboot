@@ -1,10 +1,12 @@
 package com.desouza.dscommerce.dto.product;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import com.desouza.dscommerce.dto.category.CategoryDTO;
+import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +28,8 @@ public class ProductDTO {
     @Positive(message = "Price must be positive")
     private Double price;
     private String imgUrl;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     @NotEmpty(message = "Product must have at least one category")
     private List<CategoryDTO> categories = new ArrayList<>();
@@ -33,14 +37,15 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String description, Double price, String imgUrl,
-            List<CategoryDTO> categories) {
+    public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant createdAt,
+            Instant updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
-        this.categories = categories;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public ProductDTO(Product entity) {
@@ -49,7 +54,13 @@ public class ProductDTO {
         description = entity.getDescription();
         price = entity.getPrice();
         imgUrl = entity.getImgUrl();
-        categories = entity.getCategories().stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+        createdAt = entity.getCreatedAt();
+        updatedAt = entity.getUpdatedAt();
+    }
+
+    public ProductDTO(Product entity, Set<Category> categories) {
+        this(entity);
+        categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
     }
 
     public Long getId() {
@@ -74,6 +85,14 @@ public class ProductDTO {
 
     public List<CategoryDTO> getCategories() {
         return categories;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
 }

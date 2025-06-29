@@ -46,7 +46,7 @@ public class ProductService {
         Product product = new Product();
         dtoToEntity(productDTO, product);
         product = productRepository.save(product);
-        return new ProductDTO(product);
+        return new ProductDTO(product, product.getCategories());
     }
 
     @Transactional(readOnly = true)
@@ -59,7 +59,7 @@ public class ProductService {
     public ProductDTO findById(Long id) {
         try {
             Product product = productRepository.searchById(id);
-            return new ProductDTO(product);
+            return new ProductDTO(product, product.getCategories());
         } catch (NullPointerException e) {
             throw new ResourceNotFoundException("Product with ID " + id + " was not found");
         }
@@ -71,7 +71,7 @@ public class ProductService {
             Product product = productRepository.getReferenceById(id);
             dtoToEntity(productDTO, product);
             product = productRepository.save(product);
-            return new ProductDTO(product);
+            return new ProductDTO(product, product.getCategories());
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource Not Found!");
         }
