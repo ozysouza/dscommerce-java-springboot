@@ -18,6 +18,8 @@ import com.desouza.dscommerce.repositories.OrderRepository;
 import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class OrderService {
 
@@ -46,23 +48,29 @@ public class OrderService {
 
     @Transactional
     public OrderDTO insert(OrderDTO orderDTO) {
-        Order order = new Order();
-        order.setCreatedAt(Instant.now());
-        order.setStatus(OrderStatus.WAITING_PAYMENT);
+        try {
+            Order order = new Order();
+            order.setCreatedAt(Instant.now());
+            order.setStatus(OrderStatus.WAITING_PAYMENT);
 
-        User user = userService.authenticated();
-        order.setClient(user);
+            User user = userService.authenticated();
+            order.setClient(user);
 
-        for (OrderItemDTO orderItemDTO : orderDTO.getItems()) {
-            Product product = productRepository.getReferenceById(orderItemDTO.getProductId());
-            OrderItem orderItem = new OrderItem(order, product, orderItemDTO.getQuantity(), product.getPrice());
-            order.getItems().add(orderItem);
+            for (OrderItemDTO orderItemDTO : orderDTO.getItems()) {
+                Product product = productRepository.getReferenceById(orderItemDTO.getProductId());
+                OrderItem orderItem = new OrderItem(order, product, orderItemDTO.getQuantity(), product.getPrice());
+                order.getItems().add(orderItem);
+            }
+
+            orderRepository.save(order);
+            orderItemRepository.saveAll(order.getItems());
+
+            return new OrderDTO(order);
+
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Product ID not Found");
         }
 
-        orderRepository.save(order);
-        orderItemRepository.saveAll(order.getItems());
-
-        return new OrderDTO(order);
     }
 
 }

@@ -2,11 +2,20 @@ package com.desouza.dscommerce.dto.order;
 
 import com.desouza.dscommerce.entities.OrderItem;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class OrderItemDTO {
 
+    @NotNull(message = "Field is required")
+    @Positive(message = "Product ID must be positive")
     private Long productId;
+
     private String name;
     private Double price;
+
+    @NotNull(message = "Field is required")
+    @Positive(message = "Quantity must be positive")
     private Integer quantity;
     private String imgUrl;
 
