@@ -8,12 +8,24 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.desouza.dscommerce.entities.User;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
 public class UserDTO {
 
     private Long id;
+    @Size(min = 3, max = 80, message = "Name must be between 3 and 80 characters")
+    @NotBlank(message = "Fied is required")
     private String name;
+    @Email(message = "Please enter a valid email address")
+    @NotBlank(message = "Fied is required")
     private String email;
+    @NotBlank(message = "Fied is required")
     private String phone;
+    @PastOrPresent(message = "Birthdate must be on the past or present")
+    @NotBlank(message = "Fied is required")
     private LocalDate birthDate;
 
     private List<String> roles = new ArrayList<>();
