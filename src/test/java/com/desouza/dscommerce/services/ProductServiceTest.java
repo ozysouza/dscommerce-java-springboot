@@ -68,28 +68,28 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testDeleteProductWhenValidId() {
+    public void testDeleteShouldDoNothingWhenValidId() {
         Assertions.assertDoesNotThrow(() -> {
             productService.delete(validId);
         });
     }
 
     @Test
-    public void testDeleteProductThrowsResourceNotFoundExceptionWhenInvalidId() {
+    public void testDeleteShouldThrowResourceNotFoundWhenInvalidId() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             productService.delete(invalidId);
         });
     }
 
     @Test
-    public void testDeleteProductThrowsDataBaseExceptionWhenProductIsAssociatedToOrder() {
+    public void testDeleteShouldThrownDataBaseWhenAssociatedToOrder() {
         Assertions.assertThrows(DataBaseException.class, () -> {
             productService.delete(associatedId);
         });
     }
 
     @Test
-    public void testSearchProductByValidId() {
+    public void testFindByIdShouldReturnDTOWhenValidId() {
         ProductDTO result = productService.findById(validId);
 
         Assertions.assertNotNull(result);
@@ -97,14 +97,14 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testSearchProductThrowsResourceNotFoundWhenInvalidId() {
+    public void testFindByIdShouldReturnResourceNotFoundWhenInvalidId() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             productService.findById(invalidId);
         });
     }
 
     @Test
-    public void testSearchProductCatalogShouldReturnPageable() {
+    public void testfindCatalogProductsShouldReturnPageWhenCalled() {
         Pageable pageable = PageRequest.of(0, 10);
 
         Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);

@@ -53,7 +53,8 @@ public class ProductRepositoryTest {
 
     @Test
     public void testSaveObjectWithAutoIncrementWhenIdNull() {
-        Product product = ProductFactory.createProduct();
+        Product product = new Product(null, "Phone", "Good Phone", 800.0, "https://img.com/img.png");
+        product.getCategories().add(new Category(2L, "Electronic"));
 
         product = productRepository.save(product);
         Optional<Product> result = productRepository.findById(product.getId());
