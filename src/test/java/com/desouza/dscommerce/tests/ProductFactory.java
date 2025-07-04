@@ -7,7 +7,7 @@ import com.desouza.dscommerce.entities.Product;
 public class ProductFactory {
 
     public static Product createProduct() {
-        Product product = new Product(null, "Phone", "Good Phone", 800.0, "https://img.com/img.png");
+        Product product = new Product(1L, "Phone", "Good Phone", 800.0, "https://img.com/img.png");
         product.getCategories().add(new Category(2L, "Electronic"));
         return product;
     }

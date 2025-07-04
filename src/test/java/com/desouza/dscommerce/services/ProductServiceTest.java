@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
+import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.ProductService;
@@ -63,7 +64,7 @@ public class ProductServiceTest {
         Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
 
         Mockito.when(productRepository.searchById(validId)).thenReturn(product);
-        Mockito.when(productRepository.searchById(invalidId)).thenReturn(null);
+        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).searchById(invalidId);
     }
 
     @Test
@@ -84,6 +85,21 @@ public class ProductServiceTest {
     public void testDeleteProductThrowsDataBaseExceptionWhenProductIsAssociatedToOrder() {
         Assertions.assertThrows(DataBaseException.class, () -> {
             productService.delete(associatedId);
+        });
+    }
+
+    @Test
+    public void testSearchProductByValidId() {
+        ProductDTO result = productService.findById(validId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.getId(), validId);
+    }
+
+    @Test
+    public void testSearchProductThrowsResourceNotFoundWhenInvalidId() {
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            productService.findById(invalidId);
         });
     }
 
