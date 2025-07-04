@@ -1,5 +1,7 @@
 package com.desouza.dscommerce.services;
 
+import static org.mockito.Mockito.times;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -10,10 +12,13 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.ProductService;
@@ -80,5 +85,15 @@ public class ProductServiceTest {
         Assertions.assertThrows(DataBaseException.class, () -> {
             productService.delete(associatedId);
         });
+    }
+
+    @Test
+    public void testSearchProductCatalogShouldReturnPageable() {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+
+        Assertions.assertNotNull(pages);
+        Mockito.verify(productRepository, times(1)).searchProductsCategories(pageable, "");
     }
 }
