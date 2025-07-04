@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.entities.Product;
-import com.desouza.dscommerce.tests.ProductFactory;
 
 @DataJpaTest
 public class ProductRepositoryTest {
@@ -29,7 +29,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testDeleteObjectWhenIdExists() {
+    public void testDeleteObjectWhenValidId() {
         productRepository.deleteById(validId);
 
         Optional<Product> result = productRepository.findById(validId);
@@ -38,14 +38,14 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testFindObjectWhenIdExists() {
+    public void testFindObjectWhenValidId() {
         Product result = productRepository.searchById(validId);
 
         Assertions.assertEquals(result.getId(), validId);
     }
 
     @Test
-    public void testFindObjectThrowsExceptionWhenIdDoesNotExist() {
+    public void testFindObjectThrowsExceptionWhenInvalidId() {
         Product result = productRepository.searchById(invalidId);
 
         Assertions.assertNull(result, "Expected null when searching for an invalid Object ID");
