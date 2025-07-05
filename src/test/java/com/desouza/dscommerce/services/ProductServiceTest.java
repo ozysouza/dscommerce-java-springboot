@@ -18,8 +18,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
+import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.ProductService;
@@ -94,6 +96,16 @@ public class ProductServiceTest {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(result.getId(), validId);
+        Assertions.assertEquals(result.getName(), product.getName());
+        Assertions.assertEquals(result.getDescription(), product.getDescription());
+        Assertions.assertEquals(result.getPrice(), product.getPrice());
+        Assertions.assertEquals(result.getImgUrl(), product.getImgUrl());
+        Assertions.assertEquals(result.getCategories().size(), product.getCategories().size());
+
+        List<String> expectedCatNames = result.getCategories().stream().map(CategoryDTO::getName).toList();
+        List<String> actualCatNames = product.getCategories().stream().map(Category::getName).toList();
+
+        Assertions.assertEquals(expectedCatNames, actualCatNames);
     }
 
     @Test
