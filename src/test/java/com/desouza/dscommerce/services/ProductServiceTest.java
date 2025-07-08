@@ -27,6 +27,7 @@ import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.ProductService;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.tests.CategoryFactory;
 import com.desouza.dscommerce.tests.ProductFactory;
 import com.desouza.dscommerce.tests.TestAssertions;
 
@@ -57,7 +58,7 @@ public class ProductServiceTest {
         invalidId = 2L;
         associatedId = 3L;
         product = ProductFactory.createProduct();
-        category = ProductFactory.createCategory();
+        category = CategoryFactory.createCategory();
         productDTO = ProductFactory.createProductDTO();
         page = new PageImpl<>(List.of(product));
     }
