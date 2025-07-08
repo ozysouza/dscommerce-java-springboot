@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.entities.Category;
@@ -29,6 +28,7 @@ import com.desouza.dscommerce.service.ProductService;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 import com.desouza.dscommerce.tests.ProductFactory;
+import com.desouza.dscommerce.tests.TestAssertions;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTest {
@@ -48,6 +48,7 @@ public class ProductServiceTest {
     private Category category;
     private PageImpl<Product> page;
     private Product product;
+    @SuppressWarnings("unused")
     private ProductDTO productDTO;
 
     @BeforeEach
@@ -59,29 +60,13 @@ public class ProductServiceTest {
         category = ProductFactory.createCategory();
         productDTO = ProductFactory.createProductDTO();
         page = new PageImpl<>(List.of(product));
-
-        Mockito.when(productRepository.getReferenceById(validId)).thenReturn(product);
-        Mockito.when(categoryRepository.getReferenceById(validId)).thenReturn(category);
-
-        Mockito.doNothing().when(productRepository).deleteById(validId);
-        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).deleteById(invalidId);
-        Mockito.doThrow(DataBaseException.class).when(productRepository).deleteById(associatedId);
-
-        Mockito.when(productRepository.existsById(validId)).thenReturn(true);
-        Mockito.when(productRepository.existsById(associatedId)).thenReturn(true);
-        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).existsById(invalidId);
-
-        Mockito.when(productRepository.searchProductsCategories((Pageable) ArgumentMatchers.any(),
-                ArgumentMatchers.anyString())).thenReturn(page);
-
-        Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
-
-        Mockito.when(productRepository.searchById(validId)).thenReturn(product);
-        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).searchById(invalidId);
     }
 
     @Test
     public void testDeleteShouldDoNothingWhenValidId() {
+        Mockito.when(productRepository.existsById(validId)).thenReturn(true);
+        Mockito.doNothing().when(productRepository).deleteById(validId);
+
         Assertions.assertDoesNotThrow(() -> {
             productService.delete(validId);
         });
@@ -89,6 +74,8 @@ public class ProductServiceTest {
 
     @Test
     public void testDeleteShouldThrowResourceNotFoundWhenInvalidId() {
+        Mockito.when(productRepository.existsById(invalidId)).thenReturn(false);
+
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             productService.delete(invalidId);
         });
@@ -96,6 +83,9 @@ public class ProductServiceTest {
 
     @Test
     public void testDeleteShouldThrownDataBaseWhenAssociatedToOrder() {
+        Mockito.when(productRepository.existsById(associatedId)).thenReturn(true);
+        Mockito.doThrow(DataBaseException.class).when(productRepository).deleteById(associatedId);
+
         Assertions.assertThrows(DataBaseException.class, () -> {
             productService.delete(associatedId);
         });
@@ -103,24 +93,17 @@ public class ProductServiceTest {
 
     @Test
     public void testFindByIdShouldReturnDTOWhenValidId() {
+        Mockito.when(productRepository.searchById(validId)).thenReturn(product);
+
         ProductDTO result = productService.findById(validId);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(result.getId(), validId);
-        Assertions.assertEquals(result.getName(), product.getName());
-        Assertions.assertEquals(result.getDescription(), product.getDescription());
-        Assertions.assertEquals(result.getPrice(), product.getPrice());
-        Assertions.assertEquals(result.getImgUrl(), product.getImgUrl());
-        Assertions.assertEquals(result.getCategories().size(), product.getCategories().size());
-
-        List<String> expectedCatNames = result.getCategories().stream().map(CategoryDTO::getName).toList();
-        List<String> actualCatNames = product.getCategories().stream().map(Category::getName).toList();
-
-        Assertions.assertEquals(expectedCatNames, actualCatNames);
+        TestAssertions.assertProductDtoEquals(result, product);
     }
 
     @Test
     public void testFindByIdShouldThrownResourceNotFoundWhenInvalidId() {
+        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).searchById(invalidId);
+
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             productService.findById(invalidId);
         });
@@ -128,8 +111,10 @@ public class ProductServiceTest {
 
     @Test
     public void testFindCatalogProductsShouldReturnPageWhenCalled() {
-        Pageable pageable = PageRequest.of(0, 10);
+        Mockito.when(productRepository.searchProductsCategories((Pageable) ArgumentMatchers.any(),
+                ArgumentMatchers.anyString())).thenReturn(page);
 
+        Pageable pageable = PageRequest.of(0, 10);
         Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
 
         Assertions.assertNotNull(pages);
@@ -138,23 +123,24 @@ public class ProductServiceTest {
 
     @Test
     public void testUpdateByIdShouldThrownResourceNotFoundWhenInvalidId() {
+        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).getReferenceById(invalidId);
+
+        ProductDTO product = ProductFactory.createProductDTO();
+
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            productService.findById(invalidId);
+            productService.update(invalidId, product);
         });
     }
 
     @Test
     public void testUpdateByIdShouldReturnDTOWhenValidId() {
-        ProductDTO product = ProductFactory.createProductDTO();
+        Mockito.when(productRepository.getReferenceById(validId)).thenReturn(product);
+        Mockito.when(categoryRepository.getReferenceById(validId)).thenReturn(category);
+        Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
 
+        ProductDTO product = ProductFactory.createProductDTO();
         ProductDTO result = productService.update(validId, product);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(result.getId(), validId);
-        Assertions.assertEquals(result.getName(), product.getName());
-        Assertions.assertEquals(result.getDescription(), product.getDescription());
-        Assertions.assertEquals(result.getPrice(), product.getPrice());
-        Assertions.assertEquals(result.getImgUrl(), product.getImgUrl());
-        Assertions.assertEquals(result.getCategories().size(), product.getCategories().size());
+        TestAssertions.assertProductDtoEquals(result, product);
     }
 }
