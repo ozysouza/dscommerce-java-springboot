@@ -1,5 +1,6 @@
 package com.desouza.dscommerce.tests;
 
+import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.entities.Product;
 
@@ -15,6 +16,11 @@ public class ProductFactory {
     public static ProductDTO createProductDTO() {
         Product product = createProduct();
         return new ProductDTO(product, product.getCategories());
+    }
+
+    public static ProductCatalogDTO createProductCatalogDTO() {
+        Product product = createProduct();
+        return new ProductCatalogDTO(product);
     }
 
 }
