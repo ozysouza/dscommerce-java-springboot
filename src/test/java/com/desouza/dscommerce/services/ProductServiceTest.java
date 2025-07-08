@@ -74,7 +74,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testDeleteShouldThrowResourceNotFoundWhenInvalidId() {
+    public void testDeleteShouldThrowsResourceNotFoundWhenInvalidId() {
         Mockito.when(productRepository.existsById(invalidId)).thenReturn(false);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -83,7 +83,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testDeleteShouldThrownDataBaseWhenAssociatedToOrder() {
+    public void testDeleteShouldThrowsDataBaseWhenAssociatedToOrder() {
         Mockito.when(productRepository.existsById(associatedId)).thenReturn(true);
         Mockito.doThrow(DataBaseException.class).when(productRepository).deleteById(associatedId);
 
@@ -102,7 +102,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testFindByIdShouldThrownResourceNotFoundWhenInvalidId() {
+    public void testFindByIdShouldThrowsResourceNotFoundWhenInvalidId() {
         Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).searchById(invalidId);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -123,7 +123,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateByIdShouldThrownResourceNotFoundWhenInvalidId() {
+    public void testUpdateByIdShouldThrowsResourceNotFoundWhenInvalidId() {
         Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).getReferenceById(invalidId);
 
         ProductDTO product = ProductFactory.createProductDTO();
