@@ -1,8 +1,12 @@
 package com.desouza.dscommerce.tests;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.springframework.test.web.servlet.ResultActions;
 
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
@@ -35,6 +39,15 @@ public class TestAssertions {
         List<String> actualNames = actual.getCategories().stream().map(CategoryDTO::getName).toList();
 
         Assertions.assertEquals(expectedNames, actualNames);
+    }
+
+    public static void assertProductDTOController(ResultActions result) throws Exception {
+        result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$.id").exists());
+        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.description").exists());
+        result.andExpect(jsonPath("$.price").exists());
+        result.andExpect(jsonPath("$.imgUrl").exists());
     }
 
 }

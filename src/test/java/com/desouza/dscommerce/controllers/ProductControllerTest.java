@@ -26,6 +26,8 @@ import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.service.ProductService;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 import com.desouza.dscommerce.tests.ProductFactory;
+import com.desouza.dscommerce.tests.TestAssertions;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(ProductController.class)
 public class ProductControllerTest {
@@ -70,12 +72,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(authorizedUser("CLIENT")));
 
-        result.andExpect(status().isOk());
-        result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").exists());
-        result.andExpect(jsonPath("$.description").exists());
-        result.andExpect(jsonPath("$.price").exists());
-        result.andExpect(jsonPath("$.imgUrl").exists());
+        TestAssertions.assertProductDTOController(result);
     }
 
     @Test
