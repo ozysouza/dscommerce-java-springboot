@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
@@ -56,8 +57,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(get("/products")
                 .accept(MediaType.APPLICATION_JSON)
-                .with(user("test")
-                        .roles("CLIENT")));
+                .with(authorizedUser("CLIENT")));
 
         result.andExpect(status().isOk());
     }
@@ -68,8 +68,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(get("/products/{id}", validId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(user("test")
-                        .roles("CLIENT")));
+                .with(authorizedUser("CLIENT")));
 
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.id").exists());
@@ -85,10 +84,13 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(get("/products/{id}", invalidId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(user("test")
-                        .roles("CLIENT")));
+                .with(authorizedUser("CLIENT")));
 
         result.andExpect(status().isNotFound());
+    }
+
+    private RequestPostProcessor authorizedUser(String... roles) {
+        return user("test").roles(roles);
     }
 
 }
