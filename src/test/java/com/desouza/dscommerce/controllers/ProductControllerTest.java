@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.service.ProductService;
+import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 import com.desouza.dscommerce.tests.ProductFactory;
 import com.desouza.dscommerce.tests.TestAssertions;
@@ -46,6 +48,7 @@ public class ProductControllerTest {
 
     private Long validId;
     private Long invalidId;
+    private Long associatedId;
     private ProductCatalogDTO productCatalogDTO;
     private ProductDTO productDTO;
     private PageImpl<ProductCatalogDTO> page;
@@ -54,9 +57,43 @@ public class ProductControllerTest {
     void setUp() throws Exception {
         validId = 1L;
         invalidId = 2L;
+        associatedId = 3L;
         productCatalogDTO = ProductFactory.createProductCatalogDTO();
         productDTO = ProductFactory.createProductDTO();
         page = new PageImpl<>(List.of(productCatalogDTO));
+    }
+
+    @Test
+    public void testDeleteControllerShouldDoNothingWhenValidId() throws Exception {
+        Mockito.doNothing().when(productService).delete(validId);
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authorizedUser("ADMIN")));
+
+        result.andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testDeleteControllerThrowsNotFoundWhenInvalidId() throws Exception {
+        Mockito.doThrow(ResourceNotFoundException.class).when(productService).delete(invalidId);
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", invalidId)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authorizedUser("ADMIN")));
+
+        result.andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testDeleteControllerThrowsDataBaseWhenAssociatedId() throws Exception {
+        Mockito.doThrow(DataBaseException.class).when(productService).delete(associatedId);
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", associatedId)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authorizedUser("ADMIN")));
+
+        result.andExpect(status().isBadRequest());
     }
 
     @Test
