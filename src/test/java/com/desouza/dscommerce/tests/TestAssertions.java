@@ -43,11 +43,20 @@ public class TestAssertions {
 
     public static void assertProductDTOController(ResultActions result) throws Exception {
         result.andExpect(status().isOk());
+        assertProductDTOFields(result);
+    }
+
+    public static void assertProductDTOFields(ResultActions result) throws Exception {
         result.andExpect(jsonPath("$.id").exists());
         result.andExpect(jsonPath("$.name").exists());
         result.andExpect(jsonPath("$.description").exists());
         result.andExpect(jsonPath("$.price").exists());
         result.andExpect(jsonPath("$.imgUrl").exists());
+    }
+
+    public static void assertCreatedProductController(ResultActions result) throws Exception {
+        result.andExpect(status().isCreated());
+        assertProductDTOFields(result);
     }
 
 }
