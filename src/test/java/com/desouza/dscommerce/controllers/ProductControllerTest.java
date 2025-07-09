@@ -2,9 +2,10 @@ package com.desouza.dscommerce.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
@@ -37,6 +39,9 @@ public class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private Long validId;
     private Long invalidId;
@@ -82,6 +87,36 @@ public class ProductControllerTest {
         ResultActions result = mockMvc.perform(get("/products/{id}", invalidId)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(authorizedUser("CLIENT")));
+
+        result.andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testUpdateShouldReturnProductDTOWhenValidId() throws Exception {
+        Mockito.when(productService.update(eq(validId), any())).thenReturn(productDTO);
+
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", validId)
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authorizedUser("ADMIN")));
+
+        TestAssertions.assertProductDTOController(result);
+    }
+
+    @Test
+    public void testUpdateByIdShouldThrowsNotFoundWhenInvalidId() throws Exception {
+        Mockito.when(productService.update(eq(invalidId), any())).thenThrow(ResourceNotFoundException.class);
+
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(put("/products/{id}", invalidId)
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authorizedUser("ADMIN")));
 
         result.andExpect(status().isNotFound());
     }
