@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,6 +95,21 @@ public class ProductControllerTest {
                 .with(authorizedUser("ADMIN")));
 
         result.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testShouldReturnCreatedProductDTO() throws Exception {
+        Mockito.when(productService.insert(any())).thenReturn(productDTO);
+
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authorizedUser("ADMIN")));
+
+        TestAssertions.assertCreatedProductController(result);
     }
 
     @Test
