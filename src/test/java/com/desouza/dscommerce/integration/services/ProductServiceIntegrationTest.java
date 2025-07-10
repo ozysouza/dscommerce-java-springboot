@@ -6,13 +6,20 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.service.ProductService;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
 @Tag("integration")
+@Transactional
 @SpringBootTest
 public class ProductServiceIntegrationTest {
 
@@ -52,10 +59,22 @@ public class ProductServiceIntegrationTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void testDeleteShouldThrowDataBaseWhenProductIdIsAssociated() {
         Assertions.assertThrows(DataBaseException.class, () -> {
             productService.delete(associatedId);
         });
+    }
+
+    @Test
+    public void testFindCatalogProductsShouldReturnPagedResult() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+
+        Assertions.assertNotNull(pages);
+        Assertions.assertFalse(pages.isEmpty());
+        Assertions.assertEquals(0, pages.getNumber());
+        Assertions.assertEquals(10, pages.getSize());
     }
 
 }
