@@ -59,4 +59,17 @@ public class TestAssertions {
         assertProductDTOFields(result);
     }
 
+    public static void assertProductControllerFields(ResultActions result, Long totalElements, Integer pageSize,
+            Integer pageNumber, String firstItem,
+            String secondItem) throws Exception {
+        result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$.content").exists());
+        result.andExpect(jsonPath("$.pageable").exists());
+        result.andExpect(jsonPath("$.totalElements").value(totalElements));
+        result.andExpect(jsonPath("$.size").value(pageSize));
+        result.andExpect(jsonPath("$.number").value(pageNumber));
+        result.andExpect(jsonPath("$.content[0].name").value(firstItem));
+        result.andExpect(jsonPath("$.content[1].name").value(secondItem));
+    }
+
 }
