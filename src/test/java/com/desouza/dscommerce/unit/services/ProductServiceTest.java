@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.services;
+package com.desouza.dscommerce.unit.services;
 
 import static org.mockito.Mockito.times;
 
@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -31,6 +32,7 @@ import com.desouza.dscommerce.tests.CategoryFactory;
 import com.desouza.dscommerce.tests.ProductFactory;
 import com.desouza.dscommerce.tests.TestAssertions;
 
+@Tag("unit")
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTest {
 

@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.controllers;
+package com.desouza.dscommerce.unit.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
+import com.desouza.dscommerce.controllers.ProductController;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.service.ProductService;
@@ -34,6 +36,7 @@ import com.desouza.dscommerce.tests.ProductFactory;
 import com.desouza.dscommerce.tests.TestAssertions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Tag("unit")
 @WebMvcTest(ProductController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class ProductControllerTest {
