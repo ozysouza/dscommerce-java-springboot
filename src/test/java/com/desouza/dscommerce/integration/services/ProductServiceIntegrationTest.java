@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,6 +76,25 @@ public class ProductServiceIntegrationTest {
         Assertions.assertFalse(pages.isEmpty());
         Assertions.assertEquals(0, pages.getNumber());
         Assertions.assertEquals(10, pages.getSize());
+    }
+
+    @Test
+    public void testFindCatalogProductsShouldReturnEmptyWhenPageIsInvalid() {
+        Pageable pageable = PageRequest.of(50, 10);
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+
+        Assertions.assertTrue(pages.isEmpty());
+    }
+
+    @Test
+    public void testFindCatalogProductsShouldReturnSortedWhenSortByName() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("name"));
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+
+        Assertions.assertFalse(pages.isEmpty());
+        Assertions.assertEquals("Acoustic Guitar", pages.getContent().get(0).getName());
+        Assertions.assertEquals("Adjustable Dumbbell", pages.getContent().get(1).getName());
+        Assertions.assertEquals("Air Fryer XL", pages.getContent().get(2).getName());
     }
 
 }
