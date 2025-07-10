@@ -3,7 +3,6 @@ package com.desouza.dscommerce.unit.controllers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,7 +23,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.desouza.dscommerce.controllers.ProductController;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
@@ -34,6 +32,7 @@ import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 import com.desouza.dscommerce.tests.ProductFactory;
 import com.desouza.dscommerce.tests.TestAssertions;
+import com.desouza.dscommerce.tests.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Tag("unit")
@@ -73,7 +72,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("ADMIN")));
+                .with(TestUtils.authorizedUser("ADMIN")));
 
         result.andExpect(status().isNoContent());
     }
@@ -84,7 +83,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", invalidId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("ADMIN")));
+                .with(TestUtils.authorizedUser("ADMIN")));
 
         result.andExpect(status().isNotFound());
     }
@@ -95,7 +94,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", associatedId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("ADMIN")));
+                .with(TestUtils.authorizedUser("ADMIN")));
 
         result.andExpect(status().isBadRequest());
     }
@@ -110,7 +109,7 @@ public class ProductControllerTest {
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("ADMIN")));
+                .with(TestUtils.authorizedUser("ADMIN")));
 
         TestAssertions.assertCreatedProductController(result);
     }
@@ -121,7 +120,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(get("/products")
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("CLIENT")));
+                .with(TestUtils.authorizedUser("CLIENT")));
 
         result.andExpect(status().isOk());
     }
@@ -132,7 +131,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(get("/products/{id}", validId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("CLIENT")));
+                .with(TestUtils.authorizedUser("CLIENT")));
 
         TestAssertions.assertProductDTOController(result);
     }
@@ -143,7 +142,7 @@ public class ProductControllerTest {
 
         ResultActions result = mockMvc.perform(get("/products/{id}", invalidId)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("CLIENT")));
+                .with(TestUtils.authorizedUser("CLIENT")));
 
         result.andExpect(status().isNotFound());
     }
@@ -158,7 +157,7 @@ public class ProductControllerTest {
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("ADMIN")));
+                .with(TestUtils.authorizedUser("ADMIN")));
 
         TestAssertions.assertProductDTOController(result);
     }
@@ -173,13 +172,9 @@ public class ProductControllerTest {
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(authorizedUser("ADMIN")));
+                .with(TestUtils.authorizedUser("ADMIN")));
 
         result.andExpect(status().isNotFound());
-    }
-
-    private RequestPostProcessor authorizedUser(String... roles) {
-        return user("test").roles(roles);
     }
 
 }
