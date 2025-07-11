@@ -54,6 +54,16 @@ public class TestAssertions {
         result.andExpect(jsonPath("$.imgUrl").exists());
     }
 
+    public static void assertProductDTOControllerEquals(ResultActions result, String name, String description,
+            Double price, String imgUrl, String category) throws Exception {
+        result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$.name").value(name));
+        result.andExpect(jsonPath("$.description").value(description));
+        result.andExpect(jsonPath("$.price").value(price));
+        result.andExpect(jsonPath("$.imgUrl").value(imgUrl));
+        result.andExpect(jsonPath("$.categories[0].name").value(category));
+    }
+
     public static void assertCreatedProductController(ResultActions result) throws Exception {
         result.andExpect(status().isCreated());
         assertProductDTOFields(result);
