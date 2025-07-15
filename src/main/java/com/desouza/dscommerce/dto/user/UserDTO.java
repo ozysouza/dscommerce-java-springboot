@@ -1,11 +1,10 @@
 package com.desouza.dscommerce.dto.user;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
-
+import com.desouza.dscommerce.dto.role.RoleDTO;
 import com.desouza.dscommerce.entities.User;
 
 import jakarta.validation.constraints.Email;
@@ -35,7 +34,7 @@ public class UserDTO {
     @NotBlank(message = "Fied is required")
     private LocalDate birthDate;
 
-    private List<String> roles = new ArrayList<>();
+    private Set<RoleDTO> roles = new HashSet<>();
 
     public UserDTO(Long id, String firstName, String lastName, String email, String phone) {
         this.id = id;
@@ -52,9 +51,7 @@ public class UserDTO {
         email = entity.getEmail();
         phone = entity.getPhone();
         birthDate = entity.getBirthDate();
-        for (GrantedAuthority role : entity.getRoles()) {
-            roles.add(role.getAuthority());
-        }
+        entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
     }
 
     public Long getId() {
@@ -81,7 +78,7 @@ public class UserDTO {
         return birthDate;
     }
 
-    public List<String> getRoles() {
+    public Set<RoleDTO> getRoles() {
         return roles;
     }
 

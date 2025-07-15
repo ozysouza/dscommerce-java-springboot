@@ -1,6 +1,7 @@
 package com.desouza.dscommerce.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,12 +18,33 @@ import com.desouza.dscommerce.entities.Role;
 import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.projections.UserDetailsProjection;
 import com.desouza.dscommerce.repositories.UserRepository;
+import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Transactional(readOnly = true)
+    protected User authenticated() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
+            String username = jwtPrincipal.getClaim("username");
+
+            return userRepository.searchByEmail(username).get();
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User not found");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        User entity = user.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        return new UserDTO(entity);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -39,19 +61,6 @@ public class UserService implements UserDetailsService {
         }
 
         return user;
-    }
-
-    @Transactional(readOnly = true)
-    protected User authenticated() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-            String username = jwtPrincipal.getClaim("username");
-
-            return userRepository.searchByEmail(username).get();
-        } catch (Exception e) {
-            throw new UsernameNotFoundException("User not found");
-        }
     }
 
     @Transactional(readOnly = true)
