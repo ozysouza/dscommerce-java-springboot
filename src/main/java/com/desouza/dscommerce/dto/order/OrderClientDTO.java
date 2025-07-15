@@ -14,7 +14,7 @@ public class OrderClientDTO {
 
     public OrderClientDTO(User enttiy) {
         id = enttiy.getId();
-        name = enttiy.getName();
+        name = enttiy.getFirstName() + " " + enttiy.getLastName();
     }
 
     public Long getId() {

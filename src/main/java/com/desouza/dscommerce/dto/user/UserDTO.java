@@ -16,23 +16,39 @@ import jakarta.validation.constraints.Size;
 public class UserDTO {
 
     private Long id;
+
     @Size(min = 3, max = 80, message = "Name must be between 3 and 80 characters")
     @NotBlank(message = "Fied is required")
-    private String name;
+    private String firstName;
+
+    @NotBlank(message = "Fied is required")
+    private String lastName;
+
     @Email(message = "Please enter a valid email address")
     @NotBlank(message = "Fied is required")
     private String email;
+
     @NotBlank(message = "Fied is required")
     private String phone;
+
     @PastOrPresent(message = "Birthdate must be on the past or present")
     @NotBlank(message = "Fied is required")
     private LocalDate birthDate;
 
     private List<String> roles = new ArrayList<>();
 
+    public UserDTO(Long id, String firstName, String lastName, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public UserDTO(User entity) {
         id = entity.getId();
-        name = entity.getName();
+        firstName = entity.getFirstName();
+        lastName = entity.getLastName();
         email = entity.getEmail();
         phone = entity.getPhone();
         birthDate = entity.getBirthDate();
@@ -45,8 +61,12 @@ public class UserDTO {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getEmail() {

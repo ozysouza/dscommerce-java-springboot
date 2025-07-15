@@ -114,8 +114,8 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES (44, 19);
 INSERT INTO tb_product_category (product_id, category_id) VALUES (45, 20);
 
 
-INSERT INTO tb_user (name, email, phone, password, birth_date) VALUES ('Maria Brown', 'maria@gmail.com', '988888888', '$2a$10$hekAig9V0rG/0/Svd5m6..7sl3hQmVhBwqaNmbf9zfEsj6brViBfC', '2001-07-25');
-INSERT INTO tb_user (name, email, phone, password, birth_date) VALUES ('Alex Green', 'alex@gmail.com', '977777777', '$2a$10$hekAig9V0rG/0/Svd5m6..7sl3hQmVhBwqaNmbf9zfEsj6brViBfC', '1987-12-13');
+INSERT INTO tb_user (first_name, last_name, email, phone, password, birth_date) VALUES ('Maria', 'Brown', 'maria@gmail.com', '988888888', '$2a$10$hekAig9V0rG/0/Svd5m6..7sl3hQmVhBwqaNmbf9zfEsj6brViBfC', '2001-07-25');
+INSERT INTO tb_user (first_name, last_name, email, phone, password, birth_date) VALUES ('Alex', 'Green', 'alex@gmail.com', '977777777', '$2a$10$hekAig9V0rG/0/Svd5m6..7sl3hQmVhBwqaNmbf9zfEsj6brViBfC', '1987-12-13');
 
 INSERT INTO tb_order (status, client_id, created_at) VALUES (1, 1, TIMESTAMP WITH TIME ZONE '2022-02-01T15:00:00Z');
 INSERT INTO tb_order (status, client_id, created_at) VALUES (3, 2, TIMESTAMP WITH TIME ZONE '2022-06-15T15:00:00Z');
