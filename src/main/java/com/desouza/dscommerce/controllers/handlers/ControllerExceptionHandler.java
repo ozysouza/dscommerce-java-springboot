@@ -20,16 +20,16 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.NOT_FOUND;
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<CustomError> dataBase(DataBaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomError err = new CustomError(e.getMessage(), status.value(), request.getRequestURI(), Instant.now());
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(DataBaseException.class)
-    public ResponseEntity<CustomError> dataBase(DataBaseException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
         CustomError err = new CustomError(e.getMessage(), status.value(), request.getRequestURI(), Instant.now());
         return ResponseEntity.status(status).body(err);
     }
@@ -47,9 +47,9 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.FORBIDDEN;
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
         CustomError err = new CustomError(e.getMessage(), status.value(), request.getRequestURI(), Instant.now());
         return ResponseEntity.status(status).body(err);
     }
