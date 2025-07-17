@@ -3,6 +3,8 @@ package com.desouza.dscommerce.controllers;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,12 @@ public class UserController {
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         UserDTO userDTO = userService.findById(id);
         return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
+        Page<UserDTO> users = userService.findAll(pageable);
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping
