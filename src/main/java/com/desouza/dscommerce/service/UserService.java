@@ -27,6 +27,7 @@ import com.desouza.dscommerce.projections.UserDetailsProjection;
 import com.desouza.dscommerce.repositories.RoleRepository;
 import com.desouza.dscommerce.repositories.UserRepository;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
+import com.desouza.dscommerce.service.exceptions.ForbiddenException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -123,6 +124,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDTO update(Long id, UserDTO userDTO) {
         try {
+            Long authenticatedUserId = authenticated().getId();
+            if (!authenticatedUserId.equals(id)) {
+                throw new ForbiddenException("You are not allowed to update this user");
+            }
+
             User user = userRepository.getReferenceById(id);
             copyDtoToEntity(user, userDTO);
             user = userRepository.save(user);
