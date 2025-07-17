@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.config.AppConfig;
@@ -52,6 +53,18 @@ public class UserService implements UserDetailsService {
             return userRepository.searchByEmail(username).get();
         } catch (Exception e) {
             throw new UsernameNotFoundException("User not found");
+        }
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Resource Not Found!");
+        }
+        try {
+            userRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Referential integrity constraint violation");
         }
     }
 
