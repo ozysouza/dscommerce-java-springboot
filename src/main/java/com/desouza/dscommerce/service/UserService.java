@@ -28,6 +28,8 @@ import com.desouza.dscommerce.repositories.UserRepository;
 import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -69,6 +71,12 @@ public class UserService implements UserDetailsService {
         return new UserDTO(entity);
     }
 
+    @Transactional(readOnly = true)
+    public UserDTO getMe() {
+        User user = authenticated();
+        return new UserDTO(user);
+    }
+
     @Transactional
     public UserDTO insert(UserInsertDTO userInsertDTO) {
         try {
@@ -99,10 +107,22 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    @Transactional(readOnly = true)
-    public UserDTO getMe() {
-        User user = authenticated();
-        return new UserDTO(user);
+    @Transactional
+    public UserDTO update(Long id, UserDTO userDTO) {
+        try {
+            User user = userRepository.getReferenceById(id);
+            copyDtoToEntity(user, userDTO);
+            user = userRepository.save(user);
+
+            // Force flush to detect constraint violations early
+            userRepository.flush();
+
+            return new UserDTO(user);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource Not Found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Unique email or primary key violation");
+        }
     }
 
     public void copyDtoToEntity(User user, UserDTO userDTO) {
