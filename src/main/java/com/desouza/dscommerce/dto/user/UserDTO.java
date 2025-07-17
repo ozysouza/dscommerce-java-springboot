@@ -1,14 +1,16 @@
 package com.desouza.dscommerce.dto.user;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.desouza.dscommerce.dto.role.RoleDTO;
 import com.desouza.dscommerce.entities.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
@@ -30,11 +32,15 @@ public class UserDTO {
     @NotBlank(message = "Fied is required")
     private String phone;
 
-    @PastOrPresent(message = "Birthdate must be on the past or present")
-    @NotBlank(message = "Fied is required")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @PastOrPresent(message = "Birth Date must be in the past or in the present. YYYY-MM-DD")
+    @NotNull(message = "Birth date cannot be null")
     private LocalDate birthDate;
 
-    private Set<RoleDTO> roles = new HashSet<>();
+    private List<RoleDTO> roles = new ArrayList<>();
+
+    public UserDTO() {
+    }
 
     public UserDTO(Long id, String firstName, String lastName, String email, String phone) {
         this.id = id;
@@ -78,7 +84,7 @@ public class UserDTO {
         return birthDate;
     }
 
-    public Set<RoleDTO> getRoles() {
+    public List<RoleDTO> getRoles() {
         return roles;
     }
 

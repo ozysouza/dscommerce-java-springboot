@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +14,16 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.desouza.dscommerce.config.AppConfig;
+import com.desouza.dscommerce.dto.role.RoleDTO;
 import com.desouza.dscommerce.dto.user.UserDTO;
+import com.desouza.dscommerce.dto.user.UserInsertDTO;
 import com.desouza.dscommerce.entities.Role;
 import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.projections.UserDetailsProjection;
+import com.desouza.dscommerce.repositories.RoleRepository;
 import com.desouza.dscommerce.repositories.UserRepository;
+import com.desouza.dscommerce.service.exceptions.DataBaseException;
 import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
 
 @Service
@@ -25,6 +31,12 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private AppConfig appConfig;
 
     @Transactional(readOnly = true)
     protected User authenticated() {
@@ -44,6 +56,19 @@ public class UserService implements UserDetailsService {
         Optional<User> user = userRepository.findById(id);
         User entity = user.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new UserDTO(entity);
+    }
+
+    @Transactional
+    public UserDTO insert(UserInsertDTO userInsertDTO) {
+        try {
+            User user = new User();
+            copyDtoToEntity(user, userInsertDTO);
+            user.setPassword(appConfig.passwordEncoder().encode(userInsertDTO.getPassword()));
+            user = userRepository.save(user);
+            return new UserDTO(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Unique email or primary key violation");
+        }
     }
 
     @Override
@@ -67,6 +92,20 @@ public class UserService implements UserDetailsService {
     public UserDTO getMe() {
         User user = authenticated();
         return new UserDTO(user);
+    }
+
+    public void copyDtoToEntity(User user, UserDTO userDTO) {
+        user.setBirthDate(userDTO.getBirthDate());
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setPhone(userDTO.getPhone());
+
+        user.getRoles().clear();
+        for (RoleDTO roleDTO : userDTO.getRoles()) {
+            Role role = roleRepository.getReferenceById(roleDTO.getId());
+            user.getRoles().add(role);
+        }
     }
 
 }
