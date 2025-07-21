@@ -22,6 +22,7 @@ public class CustomPasswordAuthenticationToken extends OAuth2AuthorizationGrantA
 	private final String password;
 	private final Set<String> scopes;
 	
+	@SuppressWarnings("null")
 	public CustomPasswordAuthenticationToken(Authentication clientPrincipal,
 			@Nullable Set<String> scopes, @Nullable Map<String, Object> additionalParameters) {
 		
