@@ -21,6 +21,7 @@ import com.desouza.dscommerce.config.AppConfig;
 import com.desouza.dscommerce.dto.role.RoleDTO;
 import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.dto.user.UserInsertDTO;
+import com.desouza.dscommerce.dto.user.UserUpdateDTO;
 import com.desouza.dscommerce.entities.Role;
 import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.projections.UserDetailsProjection;
@@ -118,7 +119,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO userDTO) {
+    public UserDTO update(Long id, UserUpdateDTO userUpdateDTO) {
         try {
             Long authenticatedUserId = authenticated().getId();
             if (!authenticatedUserId.equals(id)) {
@@ -126,7 +127,7 @@ public class UserService implements UserDetailsService {
             }
 
             User user = userRepository.getReferenceById(id);
-            copyDtoToEntity(user, userDTO);
+            copyDtoToEntity(user, userUpdateDTO);
             user = userRepository.save(user);
 
             // Force flush to detect constraint violations early
@@ -135,8 +136,6 @@ public class UserService implements UserDetailsService {
             return new UserDTO(user);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource Not Found");
-        } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException("Unique email or primary key violation");
         }
     }
 
