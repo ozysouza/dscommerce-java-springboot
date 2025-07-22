@@ -12,21 +12,21 @@ import com.desouza.dscommerce.projections.UserDetailsProjection;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query(nativeQuery = true, value = """
-				SELECT 
+				SELECT
 					tb_user.email AS username,
 					tb_user.password, tb_role.id AS roleId, tb_role.authority
 				FROM tb_user
-				INNER JOIN tb_user_role 
+				INNER JOIN tb_user_role
 					ON tb_user.id = tb_user_role.user_id
-				INNER JOIN tb_role 
+				INNER JOIN tb_role
 					ON tb_role.id = tb_user_role.role_id
 				WHERE tb_user.email = :email
 			""")
 	List<UserDetailsProjection> searchUserAndRolesByEmail(String email);
 
 	@Query(nativeQuery = true, value = """
-			SELECT 
-				tb_user.*, 
+			SELECT
+				tb_user.*,
 				STRING_AGG(tb_role.authority, ', ') AS roles
 			FROM tb_user
 			INNER JOIN tb_user_role
@@ -38,4 +38,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 						""")
 	Optional<User> searchByEmail(String email);
 
+	User findByEmail(String email);
 }

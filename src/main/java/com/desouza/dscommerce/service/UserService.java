@@ -93,15 +93,11 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDTO insert(UserInsertDTO userInsertDTO) {
-        try {
-            User user = new User();
-            copyDtoToEntity(user, userInsertDTO);
-            user.setPassword(appConfig.passwordEncoder().encode(userInsertDTO.getPassword()));
-            user = userRepository.save(user);
-            return new UserDTO(user);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException("Unique email or primary key violation");
-        }
+        User user = new User();
+        copyDtoToEntity(user, userInsertDTO);
+        user.setPassword(appConfig.passwordEncoder().encode(userInsertDTO.getPassword()));
+        user = userRepository.save(user);
+        return new UserDTO(user);
     }
 
     @Override
