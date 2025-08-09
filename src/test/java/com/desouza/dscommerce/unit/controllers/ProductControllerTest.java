@@ -115,7 +115,7 @@ public class ProductControllerTest {
 
     @Test
     public void testShouldReturnPaginatedCatalogProducts() throws Exception {
-        Mockito.when(productService.findCatalogProducts(anyString(), any())).thenReturn(page);
+        Mockito.when(productService.findCatalogProducts(any(), anyString(), anyString())).thenReturn(page);
 
         ResultActions result = mockMvc.perform(get("/products")
                 .accept(MediaType.APPLICATION_JSON)

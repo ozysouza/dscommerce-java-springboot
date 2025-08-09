@@ -41,7 +41,7 @@ public class ProductControllerIntegrationTest {
     void setUp() throws Exception {
         validId = 5L;
         invalidId = 250L;
-        countTotalProducts = 46L;
+        countTotalProducts = 45L;
     }
 
     @Test

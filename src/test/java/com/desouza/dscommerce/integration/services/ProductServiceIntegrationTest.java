@@ -70,7 +70,7 @@ public class ProductServiceIntegrationTest {
     @Test
     public void testFindCatalogProductsShouldReturnPagedResult() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 
         Assertions.assertNotNull(pages);
         Assertions.assertFalse(pages.isEmpty());
@@ -81,7 +81,7 @@ public class ProductServiceIntegrationTest {
     @Test
     public void testFindCatalogProductsShouldReturnEmptyWhenPageIsInvalid() {
         Pageable pageable = PageRequest.of(50, 10);
-        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 
         Assertions.assertTrue(pages.isEmpty());
     }
@@ -89,7 +89,7 @@ public class ProductServiceIntegrationTest {
     @Test
     public void testFindCatalogProductsShouldReturnSortedWhenSortByName() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("name"));
-        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 
         Assertions.assertFalse(pages.isEmpty());
         Assertions.assertEquals("Acoustic Guitar", pages.getContent().get(0).getName());

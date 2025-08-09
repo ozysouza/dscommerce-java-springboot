@@ -1,5 +1,6 @@
 package com.desouza.dscommerce.unit.services;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class ProductServiceTest {
     private Long validId;
     private Long invalidId;
     private Long associatedId;
+    @SuppressWarnings("unused")
     private Category category;
     private PageImpl<Product> page;
     private Product product;
@@ -115,13 +117,14 @@ public class ProductServiceTest {
     @Test
     public void testFindCatalogProductsShouldReturnPageWhenCalled() {
         Mockito.when(productRepository.searchProductsCategories((Pageable) ArgumentMatchers.any(),
-                ArgumentMatchers.anyString())).thenReturn(page);
+                ArgumentMatchers.anyString(), ArgumentMatchers.anyList())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<ProductCatalogDTO> pages = productService.findCatalogProducts("", pageable);
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 
         Assertions.assertNotNull(pages);
-        Mockito.verify(productRepository, times(1)).searchProductsCategories(pageable, "");
+        Mockito.verify(productRepository, times(1)).searchProductsCategories(eq(pageable), eq(""),
+                ArgumentMatchers.anyList());
     }
 
     @Test
@@ -137,13 +140,16 @@ public class ProductServiceTest {
 
     @Test
     public void testUpdateByIdShouldReturnDTOWhenValidId() {
-        Mockito.when(productRepository.getReferenceById(validId)).thenReturn(product);
-        Mockito.when(categoryRepository.getReferenceById(validId)).thenReturn(category);
-        Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
+        Product productEntity = ProductFactory.createProduct();
+        Category categoryEntity = CategoryFactory.createCategory();
 
-        ProductDTO product = ProductFactory.createProductDTO();
-        ProductDTO result = productService.update(validId, product);
+        Mockito.when(productRepository.getReferenceById(validId)).thenReturn(productEntity);
+        Mockito.when(categoryRepository.getReferenceById(categoryEntity.getId())).thenReturn(categoryEntity);
+        Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(productEntity);
 
-        TestAssertions.assertProductDtoEquals(result, product);
+        ProductDTO productDTO = new ProductDTO(productEntity, productEntity.getCategories());
+        ProductDTO result = productService.update(validId, productDTO);
+
+        TestAssertions.assertProductDtoEquals(result, productDTO);
     }
 }
