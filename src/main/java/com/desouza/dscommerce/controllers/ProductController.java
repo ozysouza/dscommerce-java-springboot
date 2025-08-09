@@ -32,9 +32,11 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductCatalogDTO>> findCatalogProducts(@RequestParam(defaultValue = "") String name,
+    public ResponseEntity<Page<ProductCatalogDTO>> findCatalogProducts(
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "0") String categoryId,
             Pageable pageable) {
-        Page<ProductCatalogDTO> productCatalogDTO = productService.findCatalogProducts(name, pageable);
+        Page<ProductCatalogDTO> productCatalogDTO = productService.findCatalogProducts(pageable, name, categoryId);
         return ResponseEntity.ok(productCatalogDTO);
     }
 
