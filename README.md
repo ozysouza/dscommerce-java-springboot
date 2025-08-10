@@ -15,7 +15,7 @@ This is a backend RESTful API for an e-commerce platform built using **Java Spri
 - H2 Database (for test)
 - PostgreSQL (for development)
 - Maven
-- JUnit (for testing, to be implemented) 
+- JUnit and Mockito
 
 ---
 
@@ -67,8 +67,6 @@ This API uses **JWT** for stateless authentication.
 - Use this token in the `Authorization` header as `Bearer <token>` for all secured endpoints
 - Roles are used to restrict access (e.g., `ROLE_ADMIN`, `ROLE_CLIENT`)
 
---
-
 ## 🔍 Query Parameters
 📄 Pagination Support
 This API supports pagination for endpoints that return large lists (e.g., products, categories). It follows Spring Data’s standard pagination mechanism.
@@ -80,7 +78,20 @@ You can customize the paginated responses using the following query parameters:
 - size	Number of items per page	?size=10
 - sort	Sorting criteria in the format `asc	desc`
 - You can chain multiple sort params	?sort=name,asc&sort=price,desc
+## Products	can also be filtered by name and category ID
+- {{host}}/products?page=1&size=10&sort=name,desc&name=gamer&categoryId=1,3
 
+## ✏️ Integration and Unit tests
+The test suite is composed of unit tests and integration tests, ensuring quality from individual components up to the full system behavior. There are still more tests to be written, but so far the test suite has the following:
+
+1️⃣ Unit Tests (more to be implemented)
+- ProductControllerTest
+- ProductRepositoryTest
+- ProductServiceTest
+
+2️⃣ Integration Tests (more to be implemented)
+- ProductControllerIntegrationTest
+- ProductServiceIntegrationTest
 
 ## 🚀 Getting Started
 
@@ -124,15 +135,16 @@ To use it:
 ### Work in Progress 🚧
 The following features are still in progress:
 
- <s>- Create/Delete/Update Categories</s>
- - Create/Delete/Update Users
+ 
+ - Create/Delete/Update Users - In Progress
  - Delete/Update Orders
 
- - Integration Tests using Spring Boot Test
+ 
 
  - API Automation Testing using Playwright
-
- - Swagger/OpenAPI Documentation
+ - <s>- Integration Tests using Spring Boot Test
+ - <s>- Create/Delete/Update Categories</s>
+ - <s>- Swagger/OpenAPI Documentation
 
 
 
