@@ -6,4 +6,6 @@ import com.desouza.dscommerce.entities.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
+    Role findByAuthority(String authority);
+
 }
