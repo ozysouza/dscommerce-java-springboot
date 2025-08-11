@@ -1,13 +1,12 @@
 package com.desouza.dscommerce.dto.user;
 
+import com.desouza.dscommerce.service.validation.password.PasswordValid;
 import com.desouza.dscommerce.service.validation.user.UserInsertValid;
 
-import jakarta.validation.constraints.NotBlank;
-
 @UserInsertValid
+@PasswordValid
 public class UserInsertDTO extends UserDTO {
 
-    @NotBlank(message = "Fied is required")
     private String password;
 
     public UserInsertDTO() {
