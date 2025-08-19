@@ -53,17 +53,22 @@ public class OauthService {
         entity = passwordRecoverRepository.save(entity);
 
         String body = """
-                Hello,
-
-                We received a request to reset your password for your account at DSCommerce.
-
-                Please click the link below to create a new password:
-                %s%s
-
-                This link will expire in %d minutes. If you did not request a password reset, you can safely ignore this email.
-
-                Thank you,
-                DSCommerce Team
+                <html>
+                  <body style="font-family: Arial, sans-serif; color: #333;">
+                    <h2>Password Reset Request</h2>
+                    <p>Hello,</p>
+                    <p>We received a request to reset your password for your <b>DSCommerce</b> account.</p>
+                    <p>Please click the button below to set a new password:</p>
+                    <p>
+                      <a href="%s%s"
+                         style="display:inline-block; padding:10px 20px; color:white; background:#007BFF; text-decoration:none; border-radius:5px;">
+                         Reset Password
+                      </a>
+                    </p>
+                    <p>This link will expire in <b>%d minutes</b>. If you didn’t request this, just ignore this email.</p>
+                    <p>Thank you,<br/>DSCommerce Team</p>
+                  </body>
+                </html>
                 """
                 .formatted(recoverUri, token, tokenMinutes);
 
