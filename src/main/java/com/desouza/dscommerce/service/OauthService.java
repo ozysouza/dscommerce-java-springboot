@@ -22,6 +22,9 @@ public class OauthService {
     @Value("${email.password-recover.token.minutes}")
     private Long tokenMinutes;
 
+    @Value("${email.password-recover.uri}")
+    private String recoverUri;
+
     @Autowired
     private UserService userService;
 
@@ -31,6 +34,9 @@ public class OauthService {
     @Autowired
     private PasswordRecoverRepository passwordRecoverRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @Transactional
     public void createRecoverToken(EmailDTO emailDTO) {
         User user = userRepository.findByEmail(emailDTO.getEmail());
@@ -38,11 +44,33 @@ public class OauthService {
             throw new ResourceNotFoundException("Email not found!");
         }
 
+        String token = UUID.randomUUID().toString();
+
         PasswordRecover entity = new PasswordRecover();
         entity.setEmail(emailDTO.getEmail());
-        entity.setToken(UUID.randomUUID().toString());
+        entity.setToken(token);
         entity.setExpiration(Instant.now().plusSeconds(tokenMinutes * 60));
         entity = passwordRecoverRepository.save(entity);
+
+        String body = """
+                Hello,
+
+                We received a request to reset your password for your account at DSCommerce.
+
+                Please click the link below to create a new password:
+                %s%s
+
+                This link will expire in %d minutes. If you did not request a password reset, you can safely ignore this email.
+
+                Thank you,
+                DSCommerce Team
+                """
+                .formatted(recoverUri, token, tokenMinutes);
+
+        emailService.sendEmail(
+                emailDTO.getEmail(),
+                "Password Reset Request",
+                body);
     }
 
     public void validateSelfOrAdmin(long userId) {
