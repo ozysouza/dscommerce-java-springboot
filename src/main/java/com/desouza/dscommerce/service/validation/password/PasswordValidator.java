@@ -3,19 +3,19 @@ package com.desouza.dscommerce.service.validation.password;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.desouza.dscommerce.dto.user.UserInsertDTO;
+import com.desouza.dscommerce.projections.PasswordProjection;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PasswordValidator implements ConstraintValidator<PasswordValid, UserInsertDTO> {
+public class PasswordValidator implements ConstraintValidator<PasswordValid, PasswordProjection> {
 
     @Override
     public void initialize(PasswordValid ann) {
     }
 
     @Override
-    public boolean isValid(UserInsertDTO dto, ConstraintValidatorContext context) {
+    public boolean isValid(PasswordProjection dto, ConstraintValidatorContext context) {
         List<String> errors = new ArrayList<>();
         String password = dto.getPassword();
 
