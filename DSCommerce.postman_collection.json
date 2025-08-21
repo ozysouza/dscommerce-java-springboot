@@ -25,7 +25,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/products?name=gamer",
+							"raw": "{{host}}/products?page=1&size=10&sort=name,desc&name=gamer&categoryId=1,3",
 							"host": [
 								"{{host}}"
 							],
@@ -34,8 +34,24 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "name,desc"
+								},
+								{
 									"key": "name",
 									"value": "gamer"
+								},
+								{
+									"key": "categoryId",
+									"value": "1,3"
 								}
 							]
 						}
@@ -58,13 +74,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/products/1",
+							"raw": "{{host}}/products/3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"products",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -87,7 +103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"metest\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n  \"price\": \"0\",\n  \"imgUrl\": \"https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/25-big.jpg\",\n  \"categories\": [\n    {\n        \"id\": 3\n    },\n    {\n        \"id\": 1\n    }\n  ]\n}",
+							"raw": "{\n  \"name\": \"metest\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n  \"price\": \"50\",\n  \"imgUrl\": \"https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/25-big.jpg\",\n  \"categories\": [\n    {\n        \"id\": 3\n    },\n    {\n        \"id\": 1\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -159,13 +175,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/products/26",
+							"raw": "{{host}}/products/3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"products",
-								"26"
+								"3"
 							]
 						}
 					},
@@ -254,6 +270,90 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Recover Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"alex@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/oauth/recover-token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"oauth",
+								"recover-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"f5ad8e39-a848-4da6-9e3e-4d057ee88911\",\n    \"password\": \"2511231A5!B\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/oauth/new-password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"oauth",
+								"new-password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -287,6 +387,176 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "User by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/users/3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Oziel\",\n  \"lastName\": \"De Souza\",\n  \"birthDate\": \"1994-07-10\",\n  \"phone\": \"4377723364\",\n  \"email\": \"ozysouz3a@gmail.com\",\n  \"password\": \"125G667q8@9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"\",\n  \"lastName\": \"De Souza\",\n  \"birthDate\": \"1994-07-10\",\n  \"phone\": \"4377723364\",\n  \"email\": \"alex@gmail.com\",\n  \"roles\": [\n    {\n        \"id\": 1\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/users?size=5&page=0&sort=firstName,desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "sort",
+									"value": "firstName,desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -316,13 +586,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/orders/3",
+							"raw": "{{host}}/orders/60",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"orders",
-								"3"
+								"60"
 							]
 						}
 					},
@@ -345,7 +615,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 2\n    },\n    {\n      \"productId\": 5,\n      \"quantity\": 1\n    }\n  ]\n}",
+							"raw": "{\n  \"items\": [\n    {\n      \"productId\": \"2\",\n      \"quantity\": 1\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -385,12 +655,26 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/categories",
+							"raw": "{{host}}/categories?size=5&page=2&sort=id,desc",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"categories"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "id,desc"
+								}
 							]
 						}
 					},
@@ -412,12 +696,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/categories",
+							"raw": "{{host}}/categories/15",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"categories"
+								"categories",
+								"15"
 							]
 						}
 					},
@@ -440,7 +725,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"New Category\"\n}",
+							"raw": "{\n    \"name\": \" \"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -476,7 +761,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"New Updated\"\n}",
+							"raw": "{\n    \"name\": \"New Change\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -484,13 +769,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/categories/4",
+							"raw": "{{host}}/categories/21",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"categories",
-								"4"
+								"21"
 							]
 						}
 					},
@@ -512,40 +797,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/categories/4",
+							"raw": "{{host}}/categories/21",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"categories",
-								"4"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Categories by id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/categories",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"categories"
+								"21"
 							]
 						}
 					},
