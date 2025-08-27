@@ -66,12 +66,11 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
-        try {
-            Product product = productRepository.searchById(id);
-            return new ProductDTO(product, product.getCategories());
-        } catch (NullPointerException e) {
+        Product product = productRepository.searchById(id);
+        if (product == null) {
             throw new ResourceNotFoundException("Product with ID " + id + " was not found");
         }
+        return new ProductDTO(product, product.getCategories());
     }
 
     @Transactional
