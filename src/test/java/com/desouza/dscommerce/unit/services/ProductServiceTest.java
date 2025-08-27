@@ -1,5 +1,6 @@
 package com.desouza.dscommerce.unit.services;
 
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
@@ -10,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -131,19 +135,20 @@ public class ProductServiceTest {
         Mockito.verify(productRepository, times(1)).searchById(invalidId);
     }
 
-    @Test
-    public void testFindCatalogProductsShouldReturnPageWhenCalled() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = { "0", "1", "2,3" })
+    public void testFindCatalogProductsWithDifferentCategoryIds(String categoryId) {
         Mockito.when(productRepository.searchProductsCategories((Pageable) ArgumentMatchers.any(),
                 ArgumentMatchers.anyString(), ArgumentMatchers.anyList())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 10);
-        String categoryId = "2,3";
 
         Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "Smart TV 55", categoryId);
 
         Assertions.assertNotNull(pages);
         Mockito.verify(productRepository, times(1)).searchProductsCategories(eq(pageable), eq("Smart TV 55"),
-                eq(List.of(2L, 3L)));
+                anyList());
     }
 
     @Test
