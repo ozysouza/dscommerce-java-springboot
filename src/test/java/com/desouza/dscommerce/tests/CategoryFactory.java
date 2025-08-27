@@ -8,4 +8,8 @@ public class CategoryFactory {
         return new Category(2L, "Electronic");
     }
 
+    public static Category createCategory(Long id, String name) {
+        return new Category(id, name);
+    }
+
 }
