@@ -122,11 +122,13 @@ public class ProductServiceTest {
 
     @Test
     public void testFindByIdShouldThrowsResourceNotFoundWhenInvalidId() {
-        Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).searchById(invalidId);
+        Mockito.when(productRepository.searchById(invalidId)).thenReturn(null);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             productService.findById(invalidId);
         });
+
+        Mockito.verify(productRepository, times(1)).searchById(invalidId);
     }
 
     @Test
@@ -135,11 +137,13 @@ public class ProductServiceTest {
                 ArgumentMatchers.anyString(), ArgumentMatchers.anyList())).thenReturn(page);
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
+        String categoryId = "2,3";
+
+        Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "Smart TV 55", categoryId);
 
         Assertions.assertNotNull(pages);
-        Mockito.verify(productRepository, times(1)).searchProductsCategories(eq(pageable), eq(""),
-                ArgumentMatchers.anyList());
+        Mockito.verify(productRepository, times(1)).searchProductsCategories(eq(pageable), eq("Smart TV 55"),
+                eq(List.of(2L, 3L)));
     }
 
     @Test
