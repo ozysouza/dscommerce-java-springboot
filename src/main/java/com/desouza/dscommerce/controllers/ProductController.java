@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
-import com.desouza.dscommerce.service.ProductService;
+import com.desouza.dscommerce.services.ProductService;
 
 import jakarta.validation.Valid;
 

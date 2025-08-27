@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service;
+package com.desouza.dscommerce.services;
 
 import java.util.NoSuchElementException;
 
@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.repositories.CategoryRepository;
-import com.desouza.dscommerce.service.exceptions.DataBaseException;
-import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.services.exceptions.DataBaseException;
+import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 

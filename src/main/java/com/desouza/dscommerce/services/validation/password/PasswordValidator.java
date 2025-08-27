@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service.validation.password;
+package com.desouza.dscommerce.services.validation.password;
 
 import java.util.ArrayList;
 import java.util.List;

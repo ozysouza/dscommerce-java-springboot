@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.dto.order.OrderDTO;
-import com.desouza.dscommerce.service.OrderService;
+import com.desouza.dscommerce.services.OrderService;
 
 import jakarta.validation.Valid;
 

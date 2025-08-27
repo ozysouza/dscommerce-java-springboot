@@ -124,6 +124,7 @@
 					<excludes>
 						<exclude>com/desouza/dscommerce/DscommerceApplication.class</exclude>
 						<exclude>com/desouza/dscommerce/config/**</exclude>
+						<exclude>com/desouza/dscommerce/projections/**</exclude>
 						<exclude>com/desouza/dscommerce/entities/**</exclude>
 						<exclude>com/desouza/dscommerce/dto/**</exclude>
 						<exclude>com/desouza/dscommerce/controllers/handlers/**</exclude>

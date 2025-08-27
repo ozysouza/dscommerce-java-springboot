@@ -1,8 +1,8 @@
 package com.desouza.dscommerce.dto.user;
 
 import com.desouza.dscommerce.projections.PasswordProjection;
-import com.desouza.dscommerce.service.validation.password.PasswordValid;
-import com.desouza.dscommerce.service.validation.user.UserInsertValid;
+import com.desouza.dscommerce.services.validation.password.PasswordValid;
+import com.desouza.dscommerce.services.validation.user.UserInsertValid;
 
 @UserInsertValid
 @PasswordValid

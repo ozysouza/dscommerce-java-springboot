@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.desouza.dscommerce.dto.error.CustomError;
 import com.desouza.dscommerce.dto.error.ValidationError;
-import com.desouza.dscommerce.service.exceptions.DataBaseException;
-import com.desouza.dscommerce.service.exceptions.EmailException;
-import com.desouza.dscommerce.service.exceptions.ForbiddenException;
-import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.services.exceptions.DataBaseException;
+import com.desouza.dscommerce.services.exceptions.EmailException;
+import com.desouza.dscommerce.services.exceptions.ForbiddenException;
+import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 

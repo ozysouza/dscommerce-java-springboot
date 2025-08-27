@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service;
+package com.desouza.dscommerce.services;
 
 import java.time.Instant;
 
@@ -16,7 +16,7 @@ import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.repositories.OrderItemRepository;
 import com.desouza.dscommerce.repositories.OrderRepository;
 import com.desouza.dscommerce.repositories.ProductRepository;
-import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 

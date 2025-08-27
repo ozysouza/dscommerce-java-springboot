@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service;
+package com.desouza.dscommerce.services;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,8 +16,8 @@ import com.desouza.dscommerce.entities.PasswordRecover;
 import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.repositories.PasswordRecoverRepository;
 import com.desouza.dscommerce.repositories.UserRepository;
-import com.desouza.dscommerce.service.exceptions.ForbiddenException;
-import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.services.exceptions.ForbiddenException;
+import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class OauthService {

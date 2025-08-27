@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.dto.category.CategoryDTO;
-import com.desouza.dscommerce.service.CategoryService;
+import com.desouza.dscommerce.services.CategoryService;
 
 import jakarta.validation.Valid;
 

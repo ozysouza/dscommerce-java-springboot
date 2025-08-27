@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.repositories.ProductRepository;
-import com.desouza.dscommerce.service.ProductService;
-import com.desouza.dscommerce.service.exceptions.DataBaseException;
-import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.services.ProductService;
+import com.desouza.dscommerce.services.exceptions.DataBaseException;
+import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 @Tag("integration")
 @Transactional

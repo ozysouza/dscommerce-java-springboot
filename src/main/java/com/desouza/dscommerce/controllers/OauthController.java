@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.desouza.dscommerce.dto.email.EmailDTO;
 import com.desouza.dscommerce.dto.user.NewPasswordDTO;
-import com.desouza.dscommerce.service.OauthService;
+import com.desouza.dscommerce.services.OauthService;
 
 import jakarta.validation.Valid;
 

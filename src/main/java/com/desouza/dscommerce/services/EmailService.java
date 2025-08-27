@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service;
+package com.desouza.dscommerce.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.desouza.dscommerce.service.exceptions.EmailException;
+import com.desouza.dscommerce.services.exceptions.EmailException;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

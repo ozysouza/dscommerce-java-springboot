@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service;
+package com.desouza.dscommerce.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +27,9 @@ import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.projections.UserDetailsProjection;
 import com.desouza.dscommerce.repositories.RoleRepository;
 import com.desouza.dscommerce.repositories.UserRepository;
-import com.desouza.dscommerce.service.exceptions.DataBaseException;
-import com.desouza.dscommerce.service.exceptions.ForbiddenException;
-import com.desouza.dscommerce.service.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.services.exceptions.DataBaseException;
+import com.desouza.dscommerce.services.exceptions.ForbiddenException;
+import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 

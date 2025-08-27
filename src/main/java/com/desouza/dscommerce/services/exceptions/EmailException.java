@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service.exceptions;
+package com.desouza.dscommerce.services.exceptions;
 
 public class EmailException extends RuntimeException {
 

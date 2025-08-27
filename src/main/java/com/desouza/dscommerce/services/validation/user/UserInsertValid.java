@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.service.validation.password;
+package com.desouza.dscommerce.services.validation.user;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,14 +8,14 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = PasswordValidator.class)
+@Constraint(validatedBy = UserInsertValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PasswordValid {
-    String message() default "Invalid password";
 
-    Class<?>[] groups() default {};
+public @interface UserInsertValid {
+	String message() default "Validation error";
 
-    Class<? extends Payload>[] payload() default {};
+	Class<?>[] groups() default {};
 
+	Class<? extends Payload>[] payload() default {};
 }
