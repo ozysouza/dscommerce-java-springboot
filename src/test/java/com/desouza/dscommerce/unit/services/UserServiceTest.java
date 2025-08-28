@@ -4,6 +4,7 @@ import static org.mockito.Mockito.times;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +21,10 @@ import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.projections.UserDetailsProjection;
 import com.desouza.dscommerce.repositories.UserRepository;
 import com.desouza.dscommerce.services.UserService;
+import com.desouza.dscommerce.tests.TestableUserService;
 import com.desouza.dscommerce.tests.UserDetailsFactory;
 import com.desouza.dscommerce.tests.UserFactory;
+import com.desouza.dscommerce.util.CustomUserUtil;
 
 @ExtendWith(SpringExtension.class)
 public class UserServiceTest {
@@ -29,11 +32,16 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    @InjectMocks
+    private TestableUserService testableUserService;
+
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private CustomUserUtil customUserUtil;
+
     private String validUserName, invalidUserName;
-    @SuppressWarnings("unused")
     private User user;
     private List<UserDetailsProjection> userDetails;
 
@@ -66,6 +74,31 @@ public class UserServiceTest {
             userService.loadUserByUsername(invalidUserName);
         });
         Mockito.verify(userRepository, times(1)).searchUserAndRolesByEmail(invalidUserName);
+    }
+
+    @Test
+    public void testAuthenticatedShouldReturnUsernameWhenUserIsValid() {
+        Mockito.when(customUserUtil.getLoggedUsername()).thenReturn(validUserName);
+        Mockito.when(userRepository.searchByEmail(validUserName)).thenReturn(Optional.of(user));
+
+        User result = testableUserService.authenticated();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.getUsername(), validUserName);
+
+        Mockito.verify(userRepository, times(1)).searchByEmail(validUserName);
+    }
+
+    @Test
+    public void testAuthenticatedShouldThrowsUsernameNotFoundExceptionWhenUserIsInvalid() {
+        Mockito.when(userRepository.searchByEmail(invalidUserName)).thenReturn(Optional.empty());
+        Mockito.when(customUserUtil.getLoggedUsername()).thenReturn(invalidUserName);
+
+        Assertions.assertThrows(UsernameNotFoundException.class, () -> {
+            testableUserService.authenticated();
+        });
+
+        Mockito.verify(userRepository, times(1)).searchByEmail(invalidUserName);
     }
 
 }
