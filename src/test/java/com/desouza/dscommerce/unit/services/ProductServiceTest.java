@@ -35,7 +35,7 @@ import com.desouza.dscommerce.services.exceptions.DataBaseException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 import com.desouza.dscommerce.tests.CategoryFactory;
 import com.desouza.dscommerce.tests.ProductFactory;
-import com.desouza.dscommerce.tests.TestAssertions;
+import com.desouza.dscommerce.tests.ProductAssertions;
 
 @Tag("unit")
 @ExtendWith(SpringExtension.class)
@@ -110,7 +110,7 @@ public class ProductServiceTest {
 
         ProductDTO result = productService.insert(productDTO);
 
-        TestAssertions.assertProductDtoEquals(result, productDTO);
+        ProductAssertions.assertDtoEquals(result, productDTO);
         Mockito.verify(productRepository, Mockito.times(1))
                 .save(ArgumentMatchers.any(Product.class));
     }
@@ -121,7 +121,7 @@ public class ProductServiceTest {
 
         ProductDTO result = productService.findById(validId);
 
-        TestAssertions.assertProductDtoEquals(result, product);
+        ProductAssertions.assertDtoEquals(result, product);
     }
 
     @Test
@@ -174,6 +174,6 @@ public class ProductServiceTest {
         ProductDTO productDTO = new ProductDTO(productEntity, productEntity.getCategories());
         ProductDTO result = productService.update(validId, productDTO);
 
-        TestAssertions.assertProductDtoEquals(result, productDTO);
+        ProductAssertions.assertDtoEquals(result, productDTO);
     }
 }

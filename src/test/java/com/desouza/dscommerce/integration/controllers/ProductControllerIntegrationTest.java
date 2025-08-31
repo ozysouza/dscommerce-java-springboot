@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.tests.ProductFactory;
-import com.desouza.dscommerce.tests.TestAssertions;
+import com.desouza.dscommerce.tests.ProductAssertions;
 import com.desouza.dscommerce.tests.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,13 +49,13 @@ public class ProductControllerIntegrationTest {
         ResultActions ascResult = mockMvc.perform(get("/products?size=12&page=0&sort=name,asc")
                 .accept(MediaType.APPLICATION_JSON));
 
-        TestAssertions.assertProductControllerFields(ascResult, countTotalProducts, 12, 0, "Acoustic Guitar",
+        ProductAssertions.assertControllerFields(ascResult, countTotalProducts, 12, 0, "Acoustic Guitar",
                 "Adjustable Dumbbell");
 
         ResultActions descResult = mockMvc.perform(get("/products?size=6&page=5&sort=name,desc")
                 .accept(MediaType.APPLICATION_JSON));
 
-        TestAssertions.assertProductControllerFields(descResult, countTotalProducts, 6, 5, "Makeup Kit Essentials",
+        ProductAssertions.assertControllerFields(descResult, countTotalProducts, 6, 5, "Makeup Kit Essentials",
                 "MacBook Pro 14");
     }
 
@@ -70,7 +70,7 @@ public class ProductControllerIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        TestAssertions.assertProductDTOControllerEquals(result, productDTO.getName(), productDTO.getDescription(),
+        ProductAssertions.assertDTOControllerEquals(result, productDTO.getName(), productDTO.getDescription(),
                 productDTO.getPrice(), productDTO.getImgUrl(), productDTO.getCategories().get(0).getName());
 
     }

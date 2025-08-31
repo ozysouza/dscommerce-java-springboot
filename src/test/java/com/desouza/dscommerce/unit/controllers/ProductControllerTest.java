@@ -31,7 +31,7 @@ import com.desouza.dscommerce.services.ProductService;
 import com.desouza.dscommerce.services.exceptions.DataBaseException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 import com.desouza.dscommerce.tests.ProductFactory;
-import com.desouza.dscommerce.tests.TestAssertions;
+import com.desouza.dscommerce.tests.ProductAssertions;
 import com.desouza.dscommerce.tests.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -110,7 +110,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        TestAssertions.assertCreatedProductController(result);
+        ProductAssertions.assertCreatedController(result);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("CLIENT")));
 
-        TestAssertions.assertProductDTOController(result);
+        ProductAssertions.assertDTOController(result);
     }
 
     @Test
@@ -158,7 +158,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        TestAssertions.assertProductDTOController(result);
+        ProductAssertions.assertDTOController(result);
     }
 
     @Test
