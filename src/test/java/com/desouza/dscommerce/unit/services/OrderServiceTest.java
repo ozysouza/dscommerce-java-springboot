@@ -26,8 +26,8 @@ import com.desouza.dscommerce.services.OauthService;
 import com.desouza.dscommerce.services.OrderService;
 import com.desouza.dscommerce.services.exceptions.ForbiddenException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
-import com.desouza.dscommerce.tests.OrderFactory;
-import com.desouza.dscommerce.tests.UserFactory;
+import com.desouza.dscommerce.tests.factory.OrderFactory;
+import com.desouza.dscommerce.tests.factory.UserFactory;
 
 @Tag("unit")
 @ExtendWith(SpringExtension.class)

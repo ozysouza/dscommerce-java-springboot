@@ -24,8 +24,8 @@ import com.desouza.dscommerce.repositories.UserRepository;
 import com.desouza.dscommerce.services.UserService;
 import com.desouza.dscommerce.tests.TestableUserService;
 import com.desouza.dscommerce.tests.UserAssertions;
-import com.desouza.dscommerce.tests.UserDetailsFactory;
-import com.desouza.dscommerce.tests.UserFactory;
+import com.desouza.dscommerce.tests.factory.UserDetailsFactory;
+import com.desouza.dscommerce.tests.factory.UserFactory;
 import com.desouza.dscommerce.util.CustomUserUtil;
 
 @ExtendWith(SpringExtension.class)

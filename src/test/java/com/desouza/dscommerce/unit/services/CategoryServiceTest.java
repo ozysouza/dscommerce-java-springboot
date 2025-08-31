@@ -23,7 +23,7 @@ import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.entities.Category;
 import com.desouza.dscommerce.repositories.CategoryRepository;
 import com.desouza.dscommerce.services.CategoryService;
-import com.desouza.dscommerce.tests.CategoryFactory;
+import com.desouza.dscommerce.tests.factory.CategoryFactory;
 
 @Tag("unit")
 @ExtendWith(SpringExtension.class)

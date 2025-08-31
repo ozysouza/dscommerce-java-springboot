@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.tests;
+package com.desouza.dscommerce.tests.factory;
 
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;

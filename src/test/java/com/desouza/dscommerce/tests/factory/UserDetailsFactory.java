@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.tests;
+package com.desouza.dscommerce.tests.factory;
 
 import java.util.ArrayList;
 import java.util.List;
