@@ -127,6 +127,7 @@
 						<exclude>com/desouza/dscommerce/projections/**</exclude>
 						<exclude>com/desouza/dscommerce/entities/**</exclude>
 						<exclude>com/desouza/dscommerce/dto/**</exclude>
+						<exclude>com/desouza/dscommerce/util/**</exclude>
 						<exclude>com/desouza/dscommerce/controllers/handlers/**</exclude>
 						<exclude>com/desouza/dscommerce/services/exceptions/**</exclude>
 						<exclude>com/desouza/dscommerce/services/validation/**</exclude>
