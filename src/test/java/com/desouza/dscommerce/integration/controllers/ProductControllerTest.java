@@ -60,6 +60,15 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void findCatalogProducts_ShouldRetunPageResult_WhenParametersIsEmpty() throws Exception {
+        ResultActions ascResult = mockMvc.perform(get("/products")
+                .accept(MediaType.APPLICATION_JSON));
+
+        ProductAssertions.assertControllerFields(ascResult, countTotalProducts, 10, 0, "The Lord of the Rings",
+                "Smart TV 55");
+    }
+
+    @Test
     public void update_ShouldReturnUpdatedProductDTO_WhenValidId() throws Exception {
         ProductDTO productDTO = ProductFactory.createProductDTO();
         String jsonBody = objectMapper.writeValueAsString(productDTO);
