@@ -22,7 +22,7 @@ import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 @Tag("integration")
 @Transactional
 @SpringBootTest
-public class ProductServiceIntegrationTest {
+public class ProductServiceTest {
 
     @Autowired
     private ProductService productService;
