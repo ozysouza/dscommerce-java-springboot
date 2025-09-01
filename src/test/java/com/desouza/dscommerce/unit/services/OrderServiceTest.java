@@ -32,6 +32,7 @@ import com.desouza.dscommerce.services.OauthService;
 import com.desouza.dscommerce.services.OrderService;
 import com.desouza.dscommerce.services.exceptions.ForbiddenException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.tests.OrderAssertions;
 import com.desouza.dscommerce.tests.TestableUserService;
 import com.desouza.dscommerce.tests.factory.OrderFactory;
 import com.desouza.dscommerce.tests.factory.ProductFactory;
@@ -103,8 +104,7 @@ public class OrderServiceTest {
 
         OrderDTO result = orderService.findById(validOrderId);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(order.getId(), result.getId());
+        OrderAssertions.assertDtoEquals(order, result);
 
         Mockito.verify(orderRepository, times(1)).findById(validOrderId);
     }
@@ -145,8 +145,7 @@ public class OrderServiceTest {
 
         OrderDTO result = orderService.insert(orderDTO);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(validOrderId, result.getId());
+        OrderAssertions.assertDtoEquals(order, result);
     }
 
     @Test
