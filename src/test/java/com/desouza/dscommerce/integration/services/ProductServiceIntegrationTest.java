@@ -44,7 +44,7 @@ public class ProductServiceIntegrationTest {
     }
 
     @Test
-    public void testShouldDeleteProductWhenIdIsvalid() {
+    public void delete_ShouldDecreaseProductCount_WhenValidId() {
         Assertions.assertEquals(countTotalProducts, productRepository.count());
 
         productService.delete(validId);
@@ -53,7 +53,7 @@ public class ProductServiceIntegrationTest {
     }
 
     @Test
-    public void testDeleteShouldThrowResourceNotFoundWhenProductIdIsInvalid() {
+    public void delete_ShouldThrowResourceNotFound_WhenInvalidId() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             productService.delete(invalidId);
         });
@@ -61,14 +61,14 @@ public class ProductServiceIntegrationTest {
 
     @Test
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public void testDeleteShouldThrowDataBaseWhenProductIdIsAssociated() {
+    public void delete_ShouldThrowDatabaseException_WhenAssociatedId() {
         Assertions.assertThrows(DataBaseException.class, () -> {
             productService.delete(associatedId);
         });
     }
 
     @Test
-    public void testFindCatalogProductsShouldReturnPagedResult() {
+    public void findCatalogProducts_ShouldReturnPagedResult_WhenPageIsValid() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 
@@ -79,7 +79,7 @@ public class ProductServiceIntegrationTest {
     }
 
     @Test
-    public void testFindCatalogProductsShouldReturnEmptyWhenPageIsInvalid() {
+    public void findCatalogProducts_ShouldReturnEmpty_WhenPageIsInvalid() {
         Pageable pageable = PageRequest.of(50, 10);
         Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 
@@ -87,7 +87,7 @@ public class ProductServiceIntegrationTest {
     }
 
     @Test
-    public void testFindCatalogProductsShouldReturnSortedWhenSortByName() {
+    public void findCatalogProducts_ShouldReturnSorted_WhenSortByName() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("name"));
         Page<ProductCatalogDTO> pages = productService.findCatalogProducts(pageable, "", "");
 

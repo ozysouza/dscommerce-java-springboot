@@ -45,7 +45,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testGetCatalogProductsShouldReturnPagedResult() throws Exception {
+    public void findCatalogProducts_ShouldReturnPagedResult_WhenSearchingWithParameters() throws Exception {
         ResultActions ascResult = mockMvc.perform(get("/products?size=12&page=0&sort=name,asc")
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -60,7 +60,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testGetUpdatedProductDTOWhenValidId() throws Exception {
+    public void update_ShouldReturnUpdatedProductDTO_WhenValidId() throws Exception {
         ProductDTO productDTO = ProductFactory.createProductDTO();
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
@@ -76,7 +76,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testGetNotFoundWhenUpdatedProductHasInvalidId() throws Exception {
+    public void update_ShouldReturnNotFound_WhenInvalidId() throws Exception {
         ProductDTO productDTO = ProductFactory.createProductDTO();
 
         String jsonBody = objectMapper.writeValueAsString(productDTO);
