@@ -66,7 +66,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testDeleteControllerShouldDoNothingWhenValidId() throws Exception {
+    public void delete_ShouldDoNothing_WhenValidId() throws Exception {
         Mockito.doNothing().when(productService).delete(validId);
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
@@ -77,7 +77,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testDeleteControllerThrowsNotFoundWhenInvalidId() throws Exception {
+    public void delete_ShouldThrowNotFoundException_WhenInvalidId() throws Exception {
         Mockito.doThrow(ResourceNotFoundException.class).when(productService).delete(invalidId);
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", invalidId)
@@ -88,7 +88,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testDeleteControllerThrowsDataBaseWhenAssociatedId() throws Exception {
+    public void delete_ShouldThrowDatabaseException_WhenAssociatedId() throws Exception {
         Mockito.doThrow(DataBaseException.class).when(productService).delete(associatedId);
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", associatedId)
@@ -99,7 +99,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testShouldReturnCreatedProductDTO() throws Exception {
+    public void insert_ShouldReturnCreatedProductDTO_WhenValidData() throws Exception {
         Mockito.when(productService.insert(any())).thenReturn(productDTO);
 
         String jsonBody = objectMapper.writeValueAsString(productDTO);
@@ -114,7 +114,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testShouldReturnPaginatedCatalogProducts() throws Exception {
+    public void findCatalogProducts_ShouldReturnPaginatedResult_WhenValidParameters() throws Exception {
         Mockito.when(productService.findCatalogProducts(any(), anyString(), anyString())).thenReturn(page);
 
         ResultActions result = mockMvc.perform(get("/products")
@@ -125,7 +125,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testFindByIdShouldReturnProductWhenValidId() throws Exception {
+    public void findById_ShouldReturnProductDTO_WhenValidId() throws Exception {
         Mockito.when(productService.findById(validId)).thenReturn(productDTO);
 
         ResultActions result = mockMvc.perform(get("/products/{id}", validId)
@@ -136,7 +136,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testFindByIdShouldThrowsNotFoundWhenInvalidId() throws Exception {
+    public void findById_ShouldThrowNotFoundException_WhenInvalidId() throws Exception {
         Mockito.when(productService.findById(invalidId)).thenThrow(ResourceNotFoundException.class);
 
         ResultActions result = mockMvc.perform(get("/products/{id}", invalidId)
@@ -147,7 +147,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testUpdateShouldReturnProductDTOWhenValidId() throws Exception {
+    public void update_ShouldReturnUpdatedProductDTO_WhenValidId() throws Exception {
         Mockito.when(productService.update(eq(validId), any())).thenReturn(productDTO);
 
         String jsonBody = objectMapper.writeValueAsString(productDTO);
@@ -162,7 +162,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testUpdateByIdShouldThrowsNotFoundWhenInvalidId() throws Exception {
+    public void update_ShouldThrowNotFoundException_WhenInvalidId() throws Exception {
         Mockito.when(productService.update(eq(invalidId), any())).thenThrow(ResourceNotFoundException.class);
 
         String jsonBody = objectMapper.writeValueAsString(productDTO);

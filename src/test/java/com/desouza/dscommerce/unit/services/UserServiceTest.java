@@ -57,7 +57,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoadUserByUsernameShouldReturnUserDetailsWhenUserIsValid() {
+    public void loadUserByUsername_ShouldReturnUserDetails_WhenUserIsValid() {
         Mockito.when(userRepository.searchUserAndRolesByEmail(validUserName)).thenReturn(userDetails);
 
         UserDetails result = userService.loadUserByUsername(validUserName);
@@ -69,7 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoadUserByUsernameShouldThrowsNotFoundExceptionWhenUserIsInvalid() {
+    public void loadUserByUsername_ShouldThrowUsernameNotFoundException_WhenUserIsInvalid() {
         Mockito.when(userRepository.searchUserAndRolesByEmail(invalidUserName)).thenReturn(new ArrayList<>());
 
         Assertions.assertThrows(UsernameNotFoundException.class, () -> {
@@ -79,7 +79,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAuthenticatedShouldReturnUsernameWhenUserIsValid() {
+    public void authenticated_ShouldReturnUser_WhenUserIsValid() {
         Mockito.when(customUserUtil.getLoggedUsername()).thenReturn(validUserName);
         Mockito.when(userRepository.searchByEmail(validUserName)).thenReturn(Optional.of(user));
 
@@ -92,7 +92,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAuthenticatedShouldThrowsUsernameNotFoundExceptionWhenUserIsInvalid() {
+    public void authenticated_ShouldThrowUsernameNotFoundException_WhenUserIsInvalid() {
         Mockito.when(userRepository.searchByEmail(invalidUserName)).thenReturn(Optional.empty());
         Mockito.when(customUserUtil.getLoggedUsername()).thenReturn(invalidUserName);
 
@@ -104,7 +104,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetMeShouldReturnUserDTOWhenUserAuthenticated() {
+    public void getMe_ShouldReturnUserDTO_WhenUserAuthenticated() {
         TestableUserService spyUserService = Mockito.spy(testableUserService);
         Mockito.doReturn(user).when(spyUserService).authenticated();
 
@@ -117,7 +117,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetMeShouldThrowsUsernameNotFoundExceptionWhenUserIsNotAuthenticated() {
+    public void getMe_ShouldThrowUsernameNotFoundException_WhenUserNotAuthenticated() {
         TestableUserService spyUserService = Mockito.spy(testableUserService);
         Mockito.doThrow(UsernameNotFoundException.class).when(spyUserService).authenticated();
 

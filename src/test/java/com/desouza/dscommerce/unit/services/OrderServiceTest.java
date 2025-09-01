@@ -98,7 +98,7 @@ public class OrderServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideUsers")
-    public void testFindByIdShouldReturnOrderDTOWhenValidIdAndAdminOrSelfClientLogged(User user) {
+    public void findById_ShouldReturnOrderDTO_WhenValidIdAndValidUserLogged(User user) {
         Mockito.when(orderRepository.findById(validOrderId)).thenReturn(Optional.of(order));
         Mockito.doNothing().when(oauthService).validateSelfOrAdmin(user.getId());
 
@@ -110,7 +110,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testFindByIdShouldThrowsForbiddenExceptionWhenValidIdAndOtherUserLogged() {
+    public void findById_ShouldThrowForbiddenException_WhenValidIdAnInvalidUserLogged() {
         Mockito.when(orderRepository.findById(validOrderId)).thenReturn(Optional.of(order));
         Mockito.doThrow(ForbiddenException.class).when(oauthService).validateSelfOrAdmin(any());
 
@@ -123,7 +123,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testFindByIdShouldThrowsResourceNotFoundWhenInvalidId() {
+    public void findById_ShouldThrowResourceNotFoundException_WhenInvalidId() {
         Mockito.when(orderRepository.findById(invalidOrderId)).thenReturn(Optional.empty());
         Mockito.doThrow(ResourceNotFoundException.class).when(oauthService).validateSelfOrAdmin(any());
 
@@ -137,7 +137,7 @@ public class OrderServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideUsers")
-    public void testInsertShouldReturnOrderDTOWhenAdminOrClientLogged(User user) {
+    public void insert_ShouldReturnOrderDTO_WhenValidUserLogged(User user) {
         Mockito.when(productRepository.getReferenceById(validProductId)).thenReturn(product);
         Mockito.when(orderRepository.save(any())).thenReturn(order);
         Mockito.when(orderItemRepository.saveAll(any())).thenReturn(new ArrayList<>(order.getItems()));
@@ -149,7 +149,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testInsertShouldThrowUserNotFoundExceptionWhenUserNotLogged() {
+    public void insert_ShouldThrowUserNotFoundException_WhenUserNotLogged() {
         Mockito.when(productRepository.getReferenceById(validProductId)).thenReturn(product);
         Mockito.when(orderRepository.save(any())).thenReturn(order);
         Mockito.when(orderItemRepository.saveAll(any())).thenReturn(new ArrayList<>(order.getItems()));
@@ -166,7 +166,7 @@ public class OrderServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideUsers")
-    public void testInsertShouldThrowResourceNotFoundExceptionWhenInvalidId(User user) {
+    public void insert_ShouldThrowResourceNotFoundException_WhenInvalidProductId(User user) {
         Mockito.when(testableUserService.authenticated()).thenReturn(user);
         Mockito.when(productRepository.getReferenceById(anyLong())).thenThrow(EntityNotFoundException.class);
 

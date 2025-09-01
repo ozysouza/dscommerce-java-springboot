@@ -46,7 +46,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void testFindAllPagedShouldReturnCategoriesPage() {
+    public void findAllPaged_ShouldReturnCategoryPage_WhenValidPageRequest() {
         Pageable pageable = PageRequest.of(0, 10);
         Mockito.when(categoryRepository.findAll(any(Pageable.class))).thenReturn(page);
 

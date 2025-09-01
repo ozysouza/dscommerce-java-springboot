@@ -36,7 +36,7 @@ public class OauthServiceTest {
     }
 
     @Test
-    public void testValidateSelfOrAdminShouldDoNothingWhenAdminLogged() {
+    public void validateSelfOrAdmin_ShouldDoNothing_WhenAdminLogged() {
         Mockito.when(testableUserService.authenticated()).thenReturn(admin);
 
         Long userId = admin.getId();
@@ -47,7 +47,7 @@ public class OauthServiceTest {
     }
 
     @Test
-    public void testValidateSelfOrAdminShouldDoNothingWhenSelfLogged() {
+    public void validateSelfOrAdmin_ShouldDoNothing_WhenSelfLogged() {
         Mockito.when(testableUserService.authenticated()).thenReturn(selfClient);
 
         Long userId = selfClient.getId();
@@ -58,7 +58,7 @@ public class OauthServiceTest {
     }
 
     @Test
-    public void testValidateSelfOrAdminShouldThrowForbiddenExceptionWhenOtherClientLogged() {
+    public void validateSelfOrAdmin_ShouldThrowForbiddenException_WhenOtherClientLogged() {
         Mockito.when(testableUserService.authenticated()).thenReturn(otherClient);
 
         Long userId = selfClient.getId();

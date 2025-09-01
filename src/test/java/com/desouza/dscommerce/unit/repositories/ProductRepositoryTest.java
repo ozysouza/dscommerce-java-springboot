@@ -32,7 +32,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testDeleteObjectWhenValidId() {
+    public void delete_ShouldRemoveObject_WhenValidId() {
         productRepository.deleteById(validId);
 
         Optional<Product> result = productRepository.findById(validId);
@@ -41,21 +41,21 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testFindObjectWhenValidId() {
+    public void findById_ShouldReturnObject_WhenValidId() {
         Product result = productRepository.searchById(validId);
 
         Assertions.assertEquals(result.getId(), validId);
     }
 
     @Test
-    public void testFindObjectThrowsExceptionWhenInvalidId() {
+    public void findById_ShouldThrowException_WhenInvalidId() {
         Product result = productRepository.searchById(invalidId);
 
         Assertions.assertNull(result, "Expected null when searching for an invalid Object ID");
     }
 
     @Test
-    public void testSaveObjectWithAutoIncrementWhenIdNull() {
+    public void save_ShouldPersistWithAutoIncrement_WhenIdIsNull() {
         Product product = new Product(null, "Phone", "Good Phone", 800.0, "https://img.com/img.png");
         product.getCategories().add(new Category(2L, "Electronic"));
 
