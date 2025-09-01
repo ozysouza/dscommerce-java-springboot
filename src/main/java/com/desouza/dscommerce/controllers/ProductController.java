@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +36,7 @@ public class ProductController {
     public ResponseEntity<Page<ProductCatalogDTO>> findCatalogProducts(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") String categoryId,
-            Pageable pageable) {
+            @PageableDefault(sort = "id") Pageable pageable) {
         Page<ProductCatalogDTO> productCatalogDTO = productService.findCatalogProducts(pageable, name, categoryId);
         return ResponseEntity.ok(productCatalogDTO);
     }
