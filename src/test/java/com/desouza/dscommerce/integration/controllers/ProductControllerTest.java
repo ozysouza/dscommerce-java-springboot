@@ -1,6 +1,7 @@
 package com.desouza.dscommerce.integration.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -36,12 +38,28 @@ public class ProductControllerTest {
     private Long validId;
     private Long invalidId;
     private Long countTotalProducts;
+    private ProductDTO productDTO;
 
     @BeforeEach
     void setUp() throws Exception {
         validId = 5L;
         invalidId = 250L;
         countTotalProducts = 45L;
+        productDTO = ProductFactory.createProductDTO();
+    }
+
+    @Test
+    public void insert_ShouldReturnCreatedProductDTO_WhenValidDataAndAdminUser() throws Exception {
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(TestUtils.authorizedUser("ADMIN")));
+
+        ProductAssertions.assertCreatedController(result);
+        ProductAssertions.assertDTOControllerEquals(result, productDTO, HttpStatus.CREATED);
     }
 
     @Test
