@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.desouza.dscommerce.dto.category.CategoryDTO;
@@ -54,14 +55,17 @@ public class ProductAssertions {
         result.andExpect(jsonPath("$.imgUrl").exists());
     }
 
-    public static void assertDTOControllerEquals(ResultActions result, String name, String description,
-            Double price, String imgUrl, String category) throws Exception {
-        result.andExpect(status().isOk());
-        result.andExpect(jsonPath("$.name").value(name));
-        result.andExpect(jsonPath("$.description").value(description));
-        result.andExpect(jsonPath("$.price").value(price));
-        result.andExpect(jsonPath("$.imgUrl").value(imgUrl));
-        result.andExpect(jsonPath("$.categories[0].name").value(category));
+    public static void assertDTOControllerEquals(ResultActions result, ProductDTO productDTO, HttpStatus expectedStatus)
+            throws Exception {
+        result.andExpect(status().is(expectedStatus.value()));
+        result.andExpect(jsonPath("$.name").value(productDTO.getName()));
+        result.andExpect(jsonPath("$.description").value(productDTO.getDescription()));
+        result.andExpect(jsonPath("$.price").value(productDTO.getPrice()));
+        result.andExpect(jsonPath("$.imgUrl").value(productDTO.getImgUrl()));
+        for (int i = 0; i < productDTO.getCategories().size(); i++) {
+            result.andExpect(
+                    jsonPath("$.categories[" + i + "].name").value(productDTO.getCategories().get(i).getName()));
+        }
     }
 
     public static void assertCreatedController(ResultActions result) throws Exception {

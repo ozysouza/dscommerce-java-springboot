@@ -79,9 +79,8 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        ProductAssertions.assertDTOControllerEquals(result, productDTO.getName(), productDTO.getDescription(),
-                productDTO.getPrice(), productDTO.getImgUrl(), productDTO.getCategories().get(0).getName());
-
+        ProductAssertions.assertDTOController(result);
+        ProductAssertions.assertDTOControllerEquals(result, productDTO, HttpStatus.OK);
     }
 
     @Test
