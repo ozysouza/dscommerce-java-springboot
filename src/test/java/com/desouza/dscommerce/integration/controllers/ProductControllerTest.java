@@ -10,6 +10,8 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -114,6 +116,28 @@ public class ProductControllerTest {
                 .with(TestUtils.authorizedUser("ADMIN")));
 
         Map<String, String> expectedErrors = Map.of("description", "Description must be at least 10 characters");
+
+        ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            ", Field is required",
+            "0.0, Price must be positive",
+            "-1.0, Price must be positive"
+    })
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidPrice(Double price, String message) throws Exception {
+        product.setPrice(price);
+        productDTO = new ProductDTO(product, product.getCategories());
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(TestUtils.authorizedUser("ADMIN")));
+
+        Map<String, String> expectedErrors = Map.of("price", message);
 
         ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
     }
