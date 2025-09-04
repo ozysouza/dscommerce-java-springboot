@@ -70,8 +70,11 @@ public class ProductControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "''", "'ab'" })
-    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidName(String name) throws Exception {
+    @CsvSource({
+            "'', Field is required",
+            "'ab', Name must be between 3 and 80 characters" })
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidName(String name, String errorMessage)
+            throws Exception {
         product.setName(name);
         productDTO = new ProductDTO(product, product.getCategories());
         String jsonBody = objectMapper.writeValueAsString(productDTO);
@@ -82,14 +85,18 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        Map<String, String> expectedErrors = Map.of("name", "Name must be between 3 and 80 characters");
+        Map<String, String> expectedErrors = Map.of("name", errorMessage);
 
         ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
     }
 
-    @Test
-    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidDescription() throws Exception {
-        product.setDescription("New item");
+    @ParameterizedTest
+    @CsvSource({
+            "'', Field is required",
+            "'New item', Description must be at least 10 characters" })
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidDescription(String description, String errorMessage)
+            throws Exception {
+        product.setDescription(description);
         productDTO = new ProductDTO(product, product.getCategories());
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
@@ -99,7 +106,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        Map<String, String> expectedErrors = Map.of("description", "Description must be at least 10 characters");
+        Map<String, String> expectedErrors = Map.of("description", errorMessage);
 
         ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
     }
@@ -110,7 +117,8 @@ public class ProductControllerTest {
             "0.0, Price must be positive",
             "-1.0, Price must be positive"
     })
-    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidPrice(Double price, String message) throws Exception {
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidPrice(Double price, String errorMessage)
+            throws Exception {
         product.setPrice(price);
         productDTO = new ProductDTO(product, product.getCategories());
         String jsonBody = objectMapper.writeValueAsString(productDTO);
@@ -121,7 +129,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(TestUtils.authorizedUser("ADMIN")));
 
-        Map<String, String> expectedErrors = Map.of("price", message);
+        Map<String, String> expectedErrors = Map.of("price", errorMessage);
 
         ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
     }
