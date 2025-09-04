@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.dto.product.ProductDTO;
+import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.tests.ProductAssertions;
 import com.desouza.dscommerce.tests.TestUtils;
 import com.desouza.dscommerce.tests.factory.ProductFactory;
@@ -39,12 +42,14 @@ public class ProductControllerTest {
     private Long invalidId;
     private Long countTotalProducts;
     private ProductDTO productDTO;
+    private Product product;
 
     @BeforeEach
     void setUp() throws Exception {
         validId = 5L;
         invalidId = 250L;
         countTotalProducts = 45L;
+        product = ProductFactory.createProduct();
         productDTO = ProductFactory.createProductDTO();
     }
 
@@ -60,6 +65,23 @@ public class ProductControllerTest {
 
         ProductAssertions.assertCreatedController(result);
         ProductAssertions.assertDTOControllerEquals(result, productDTO, HttpStatus.CREATED);
+    }
+
+    @Test
+    public void insert_ShouldReturnUnprocessableEntity_WhenEmptyProductName() throws Exception {
+        product.setName("");
+        productDTO = new ProductDTO(product, product.getCategories());
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(TestUtils.authorizedUser("ADMIN")));
+
+        Map<String, String> expectedErrors = Map.of("name", "Field is required");
+
+        ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
     }
 
     @Test
