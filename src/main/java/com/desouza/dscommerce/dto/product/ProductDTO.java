@@ -17,15 +17,21 @@ import jakarta.validation.constraints.Size;
 
 public class ProductDTO {
 
+    public interface BasicChecks {
+    }
+
+    public interface AdvancedChecks {
+    }
+
     private Long id;
-    @Size(min = 3, max = 80, message = "Name must be between 3 and 80 characters")
-    @NotBlank(message = "Fied is required")
+    @NotBlank(message = "Fied is required", groups = BasicChecks.class)
+    @Size(min = 3, max = 80, message = "Name must be between 3 and 80 characters", groups = AdvancedChecks.class)
     private String name;
-    @Size(min = 10, message = "Description must be at least 10 characters")
-    @NotBlank(message = "Fied is required")
+    @NotBlank(message = "Fied is required", groups = BasicChecks.class)
+    @Size(min = 10, message = "Description must be at least 10 characters", groups = AdvancedChecks.class)
     private String description;
-    @NotNull(message = "Field is required")
-    @Positive(message = "Price must be positive")
+    @NotNull(message = "Field is required", groups = BasicChecks.class)
+    @Positive(message = "Price must be positive", groups = AdvancedChecks.class)
     private Double price;
     private String imgUrl;
     private Instant createdAt;

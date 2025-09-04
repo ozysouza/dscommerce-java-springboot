@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +22,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
+import com.desouza.dscommerce.dto.product.ProductDTO.AdvancedChecks;
+import com.desouza.dscommerce.dto.product.ProductDTO.BasicChecks;
 import com.desouza.dscommerce.services.ProductService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/products")
+@Validated({ BasicChecks.class, AdvancedChecks.class })
 public class ProductController {
 
     @Autowired
