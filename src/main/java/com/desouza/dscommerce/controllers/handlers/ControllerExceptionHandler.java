@@ -18,6 +18,7 @@ import com.desouza.dscommerce.services.exceptions.ForbiddenException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -46,6 +47,21 @@ public class ControllerExceptionHandler {
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             err.addError(f.getField(), f.getDefaultMessage());
         }
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<CustomError> constraintViolation(ConstraintViolationException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        ValidationError err = new ValidationError("Invalid data", status.value(), request.getRequestURI(),
+                Instant.now());
+
+        e.getConstraintViolations().forEach(x -> {
+            String fieldName = x.getPropertyPath().toString();
+            fieldName = fieldName.substring(fieldName.lastIndexOf('.') + 1);
+            String message = x.getMessage();
+            err.addError(fieldName, message);
+        });
         return ResponseEntity.status(status).body(err);
     }
 
