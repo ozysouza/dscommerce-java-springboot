@@ -69,26 +69,10 @@ public class ProductControllerTest {
         ProductAssertions.assertDTOControllerEquals(result, productDTO, HttpStatus.CREATED);
     }
 
-    @Test
-    public void insert_ShouldReturnUnprocessableEntity_WhenEmptyProductName() throws Exception {
-        product.setName("");
-        productDTO = new ProductDTO(product, product.getCategories());
-        String jsonBody = objectMapper.writeValueAsString(productDTO);
-
-        ResultActions result = mockMvc.perform(post("/products")
-                .content(jsonBody)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .with(TestUtils.authorizedUser("ADMIN")));
-
-        Map<String, String> expectedErrors = Map.of("name", "Field is required");
-
-        ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
-    }
-
-    @Test
-    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidSizeOnProductName() throws Exception {
-        product.setName("Te");
+    @ParameterizedTest
+    @CsvSource({ "''", "'ab'" })
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidName(String name) throws Exception {
+        product.setName(name);
         productDTO = new ProductDTO(product, product.getCategories());
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
