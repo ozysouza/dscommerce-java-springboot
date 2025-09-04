@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatus;
@@ -84,6 +85,18 @@ public class ProductAssertions {
         result.andExpect(jsonPath("$.number").value(pageNumber));
         result.andExpect(jsonPath("$.content[0].name").value(firstItem));
         result.andExpect(jsonPath("$.content[1].name").value(secondItem));
+    }
+
+    public static void assertControllerErrorFields(ResultActions result, HttpStatus expectedStatus,
+            Map<String, String> expectedErrors) throws Exception {
+        result.andExpect(status().is(expectedStatus.value()));
+
+        int index = 0;
+        for (Map.Entry<String, String> entry : expectedErrors.entrySet()) {
+            result.andExpect(jsonPath("$.erros[" + index + "].fieldName").value(entry.getKey()));
+            result.andExpect(jsonPath("$.erros[" + index + "].message").value(entry.getValue()));
+            index++;
+        }
     }
 
 }
