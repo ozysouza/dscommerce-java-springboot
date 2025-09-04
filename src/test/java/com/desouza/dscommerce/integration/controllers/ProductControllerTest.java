@@ -102,6 +102,23 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidDescription() throws Exception {
+        product.setDescription("New item");
+        productDTO = new ProductDTO(product, product.getCategories());
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(TestUtils.authorizedUser("ADMIN")));
+
+        Map<String, String> expectedErrors = Map.of("description", "Description must be at least 10 characters");
+
+        ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
+    }
+
+    @Test
     public void findCatalogProducts_ShouldReturnPagedResult_WhenSearchingWithParameters() throws Exception {
         ResultActions ascResult = mockMvc.perform(get("/products?size=12&page=0&sort=name,asc")
                 .accept(MediaType.APPLICATION_JSON));
