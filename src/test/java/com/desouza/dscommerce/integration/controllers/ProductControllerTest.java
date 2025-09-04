@@ -85,6 +85,23 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidSizeOnProductName() throws Exception {
+        product.setName("Te");
+        productDTO = new ProductDTO(product, product.getCategories());
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(TestUtils.authorizedUser("ADMIN")));
+
+        Map<String, String> expectedErrors = Map.of("name", "Name must be between 3 and 80 characters");
+
+        ProductAssertions.assertControllerErrorFields(result, HttpStatus.UNPROCESSABLE_ENTITY, expectedErrors);
+    }
+
+    @Test
     public void findCatalogProducts_ShouldReturnPagedResult_WhenSearchingWithParameters() throws Exception {
         ResultActions ascResult = mockMvc.perform(get("/products?size=12&page=0&sort=name,asc")
                 .accept(MediaType.APPLICATION_JSON));
