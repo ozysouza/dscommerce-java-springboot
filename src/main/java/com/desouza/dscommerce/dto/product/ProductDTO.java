@@ -24,10 +24,10 @@ public class ProductDTO {
     }
 
     private Long id;
-    @NotBlank(message = "Fied is required", groups = BasicChecks.class)
+    @NotBlank(message = "Field is required", groups = BasicChecks.class)
     @Size(min = 3, max = 80, message = "Name must be between 3 and 80 characters", groups = AdvancedChecks.class)
     private String name;
-    @NotBlank(message = "Fied is required", groups = BasicChecks.class)
+    @NotBlank(message = "Field is required", groups = BasicChecks.class)
     @Size(min = 10, message = "Description must be at least 10 characters", groups = AdvancedChecks.class)
     private String description;
     @NotNull(message = "Field is required", groups = BasicChecks.class)
