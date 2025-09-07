@@ -51,7 +51,7 @@ public class ProductControllerTest {
     private ProductDTO productDTO;
     private Product product;
 
-    private String adminUser, clientUser, userPassword, token;
+    private String adminUser, clientUser, userPassword, adminToken, clientToken;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -64,14 +64,15 @@ public class ProductControllerTest {
         adminUser = "alex@gmail.com";
         clientUser = "maria@gmail.com";
         userPassword = "123456";
+
+        adminToken = tokenUtil.obtainAccessToken(mockMvc, adminUser, userPassword);
+        clientToken = tokenUtil.obtainAccessToken(mockMvc, clientUser, userPassword);
     }
 
     @Test
     public void delete_ShouldReturnNoContent_WhenValidIdAndAdminUser() throws Exception {
-        token = tokenUtil.obtainAccessToken(mockMvc, adminUser, userPassword);
-
         ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + adminToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNoContent());
@@ -79,10 +80,8 @@ public class ProductControllerTest {
 
     @Test
     public void delete_ShouldReturnNotFound_WhenInvalidId() throws Exception {
-        token = tokenUtil.obtainAccessToken(mockMvc, adminUser, userPassword);
-
         ResultActions result = mockMvc.perform(delete("/products/{id}", invalidId)
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + adminToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNotFound());
@@ -90,10 +89,8 @@ public class ProductControllerTest {
 
     @Test
     public void delete_ShouldReturnForbidden_WhenValidIdAndClientUser() throws Exception {
-        token = tokenUtil.obtainAccessToken(mockMvc, clientUser, userPassword);
-
         ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + clientToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isForbidden());
