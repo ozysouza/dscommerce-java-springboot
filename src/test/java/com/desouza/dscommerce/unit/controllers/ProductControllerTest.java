@@ -30,9 +30,9 @@ import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.services.ProductService;
 import com.desouza.dscommerce.services.exceptions.DataBaseException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
-import com.desouza.dscommerce.tests.ProductAssertions;
-import com.desouza.dscommerce.tests.TestUtils;
+import com.desouza.dscommerce.tests.assertions.ProductAssertions;
 import com.desouza.dscommerce.tests.factory.ProductFactory;
+import com.desouza.dscommerce.tests.util.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Tag("unit")

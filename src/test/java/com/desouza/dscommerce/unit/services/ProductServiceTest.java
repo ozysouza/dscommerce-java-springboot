@@ -33,9 +33,9 @@ import com.desouza.dscommerce.repositories.ProductRepository;
 import com.desouza.dscommerce.services.ProductService;
 import com.desouza.dscommerce.services.exceptions.DataBaseException;
 import com.desouza.dscommerce.services.exceptions.ResourceNotFoundException;
+import com.desouza.dscommerce.tests.assertions.ProductAssertions;
 import com.desouza.dscommerce.tests.factory.CategoryFactory;
 import com.desouza.dscommerce.tests.factory.ProductFactory;
-import com.desouza.dscommerce.tests.ProductAssertions;
 
 @Tag("unit")
 @ExtendWith(SpringExtension.class)

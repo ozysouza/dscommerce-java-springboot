@@ -23,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.entities.Product;
-import com.desouza.dscommerce.tests.ProductAssertions;
-import com.desouza.dscommerce.tests.TestUtils;
+import com.desouza.dscommerce.tests.assertions.ProductAssertions;
 import com.desouza.dscommerce.tests.factory.ProductFactory;
+import com.desouza.dscommerce.tests.util.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Tag("integration")

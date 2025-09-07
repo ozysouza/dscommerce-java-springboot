@@ -1,4 +1,4 @@
-package com.desouza.dscommerce.tests;
+package com.desouza.dscommerce.tests.assertions;
 
 import java.util.List;
 

@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.desouza.dscommerce.entities.User;
 import com.desouza.dscommerce.services.OauthService;
 import com.desouza.dscommerce.services.exceptions.ForbiddenException;
-import com.desouza.dscommerce.tests.TestableUserService;
+import com.desouza.dscommerce.tests.assertions.TestableUserService;
 import com.desouza.dscommerce.tests.factory.UserFactory;
 
 @Tag("unit")
