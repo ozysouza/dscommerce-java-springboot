@@ -78,6 +78,17 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void delete_ShouldReturnForbidden_WhenValidIdAndClientUser() throws Exception {
+        token = tokenUtil.obtainAccessToken(mockMvc, clientUser, userPassword);
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isForbidden());
+    }
+
+    @Test
     public void insert_ShouldReturnCreatedProductDTO_WhenValidDataAndAdminUser() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
