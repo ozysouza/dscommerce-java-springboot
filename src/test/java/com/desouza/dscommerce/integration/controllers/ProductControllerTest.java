@@ -78,6 +78,17 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void delete_ShouldReturnNotFound_WhenInvalidId() throws Exception {
+        token = tokenUtil.obtainAccessToken(mockMvc, adminUser, userPassword);
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", invalidId)
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isNotFound());
+    }
+
+    @Test
     public void delete_ShouldReturnForbidden_WhenValidIdAndClientUser() throws Exception {
         token = tokenUtil.obtainAccessToken(mockMvc, clientUser, userPassword);
 
