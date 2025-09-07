@@ -26,6 +26,7 @@ import com.desouza.dscommerce.entities.Product;
 import com.desouza.dscommerce.tests.assertions.ProductAssertions;
 import com.desouza.dscommerce.tests.factory.ProductFactory;
 import com.desouza.dscommerce.tests.util.TestUtils;
+import com.desouza.dscommerce.tests.util.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Tag("integration")
@@ -39,6 +40,9 @@ public class ProductControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private TokenUtil tokenUtil;
 
     private Long validId;
     private Long invalidId;
@@ -94,7 +98,8 @@ public class ProductControllerTest {
     @CsvSource({
             "'', Field is required",
             "'New item', Description must be at least 10 characters" })
-    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidDescription(String description, String errorMessage)
+    public void insert_ShouldReturnUnprocessableEntity_WhenInvalidDescription(String description,
+            String errorMessage)
             throws Exception {
         product.setDescription(description);
         productDTO = new ProductDTO(product, product.getCategories());
@@ -152,7 +157,21 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void insert_ShouldReturnUnauthorized_WhenUserNotAuthenticated() throws Exception {
+    public void insert_ShouldReturnUnauthorized_WhenUserHasInvalidToken() throws Exception {
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+        String invalidToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.invalidpart.signature";
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .header("Authorization", "Bearer " + invalidToken)
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void insert_ShouldReturnUnauthorized_WhenUserNotAuthenticaed() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
         ResultActions result = mockMvc.perform(post("/products")
