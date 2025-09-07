@@ -1,5 +1,6 @@
 package com.desouza.dscommerce.integration.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -50,6 +51,8 @@ public class ProductControllerTest {
     private ProductDTO productDTO;
     private Product product;
 
+    private String adminUser, clientUser, userPassword, token;
+
     @BeforeEach
     void setUp() throws Exception {
         validId = 5L;
@@ -57,6 +60,21 @@ public class ProductControllerTest {
         countTotalProducts = 45L;
         product = ProductFactory.createProduct();
         productDTO = ProductFactory.createProductDTO();
+
+        adminUser = "alex@gmail.com";
+        clientUser = "maria@gmail.com";
+        userPassword = "123456";
+    }
+
+    @Test
+    public void delete_ShouldReturnNoContent_WhenValidIdAndAdminUser() throws Exception {
+        token = tokenUtil.obtainAccessToken(mockMvc, adminUser, userPassword);
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isNoContent());
     }
 
     @Test
