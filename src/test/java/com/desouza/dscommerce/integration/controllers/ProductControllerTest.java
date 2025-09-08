@@ -51,7 +51,8 @@ public class ProductControllerTest {
     private ProductDTO productDTO;
     private Product product;
 
-    private String adminUser, clientUser, userPassword, adminToken, clientToken;
+    private String adminUser, clientUser, userPassword;
+    private String adminToken, clientToken, invalidToken;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -67,6 +68,7 @@ public class ProductControllerTest {
 
         adminToken = tokenUtil.obtainAccessToken(mockMvc, adminUser, userPassword);
         clientToken = tokenUtil.obtainAccessToken(mockMvc, clientUser, userPassword);
+        invalidToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.invalidpart.signature";
     }
 
     @Test
@@ -85,6 +87,15 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void delete_ShouldReturnUnauthorized_WhenInvalidIdToken() throws Exception {
+        ResultActions result = mockMvc.perform(delete("/products/{id}", validId)
+                .header("Authorization", "Bearer " + invalidToken)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -196,7 +207,6 @@ public class ProductControllerTest {
     @Test
     public void insert_ShouldReturnUnauthorized_WhenUserHasInvalidToken() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(productDTO);
-        String invalidToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.invalidpart.signature";
 
         ResultActions result = mockMvc.perform(post("/products")
                 .header("Authorization", "Bearer " + invalidToken)
