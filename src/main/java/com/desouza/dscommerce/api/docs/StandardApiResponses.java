@@ -98,4 +98,19 @@ public interface StandardApiResponses {
     public @interface StandardPutAuthResponse {
     }
 
+    // =====================
+    // DELETE
+    // =====================
+    @Target({ ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ApiResponses({
+            @ApiResponse(description = "No Content", responseCode = "204"),
+            @ApiResponse(description = "Unauthorized", responseCode = "401"),
+            @ApiResponse(description = "Forbidden", responseCode = "403"),
+            @ApiResponse(description = "Not Found", responseCode = "404")
+    })
+    public @interface StandardDeleteResponse {
+    }
+
 }
