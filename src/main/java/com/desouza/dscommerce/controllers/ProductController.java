@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
@@ -41,6 +42,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Operation(summary = "Find all Products", description = "Returns all Products")
+    @StandardGetAllResponse
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ProductCatalogDTO>> findCatalogProducts(
             @RequestParam(defaultValue = "") String name,

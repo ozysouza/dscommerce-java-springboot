@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.services.CategoryService;
@@ -34,6 +35,8 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Operation(summary = "Find all Categories", description = "Returns all Categories")
+    @StandardGetAllResponse
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) {
         Page<CategoryDTO> categoryList = categoryService.findAllPaged(pageable);

@@ -12,6 +12,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface StandardApiResponses {
 
     // =====================
+    // GET ALL
+    // =====================
+    @Target({ ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ApiResponses({
+            @ApiResponse(description = "OK", responseCode = "200"),
+    })
+    public @interface StandardGetAllResponse {
+    }
+
+    // =====================
     // GET BY ID
     // =====================
     @Target({ ElementType.METHOD })

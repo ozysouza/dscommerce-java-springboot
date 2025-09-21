@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIWithAutorizationdResponse;
 import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.dto.user.UserInsertDTO;
@@ -61,6 +62,8 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
+    @Operation(summary = "Find all Users", description = "Returns all Users")
+    @StandardGetAllResponse
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         Page<UserDTO> users = userService.findAll(pageable);
