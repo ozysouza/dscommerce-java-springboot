@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostAuthResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPutAuthResponse;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO.AdvancedChecks;
@@ -76,6 +77,8 @@ public class ProductController {
         return ResponseEntity.created(uri).body(productDTO);
     }
 
+    @Operation(summary = "Update Product by ID", description = "Returns the updated Product")
+    @StandardPutAuthResponse
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {

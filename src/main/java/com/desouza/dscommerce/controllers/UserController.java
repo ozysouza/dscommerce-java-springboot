@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIWithAutorizationdResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostNoAuthResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPutAuthResponse;
 import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.dto.user.UserInsertDTO;
 import com.desouza.dscommerce.dto.user.UserUpdateDTO;
@@ -84,6 +85,8 @@ public class UserController {
         return ResponseEntity.created(uri).body(newDto);
     }
 
+    @Operation(summary = "Update User by ID", description = "Returns the updated User")
+    @StandardPutAuthResponse
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {

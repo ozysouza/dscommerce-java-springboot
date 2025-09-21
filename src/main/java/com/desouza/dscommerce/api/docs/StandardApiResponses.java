@@ -80,4 +80,22 @@ public interface StandardApiResponses {
     public @interface StandardPostNoAuthResponse {
     }
 
+    // =====================
+    // PUT WITH AUTH
+    // =====================
+    @Target({ ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ApiResponses({
+            @ApiResponse(description = "OK", responseCode = "200"),
+            @ApiResponse(description = "Bad Request", responseCode = "400"),
+            @ApiResponse(description = "Unauthorized", responseCode = "401"),
+            @ApiResponse(description = "Forbidden", responseCode = "403"),
+            @ApiResponse(description = "Not Found", responseCode = "404"),
+            @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
+    })
+
+    public @interface StandardPutAuthResponse {
+    }
+
 }

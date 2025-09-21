@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostAuthResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPutAuthResponse;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.services.CategoryService;
 
@@ -66,6 +67,8 @@ public class CategoryController {
         return ResponseEntity.created(uri).body(categoryDTO);
     }
 
+    @Operation(summary = "Update Category by ID", description = "Returns the updated Category")
+    @StandardPutAuthResponse
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
