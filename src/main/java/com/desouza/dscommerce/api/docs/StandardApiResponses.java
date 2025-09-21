@@ -113,4 +113,17 @@ public interface StandardApiResponses {
     public @interface StandardDeleteResponse {
     }
 
+    // =====================
+    // RECOVER TOKEN
+    // =====================
+    @Target({ ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ApiResponses({
+            @ApiResponse(description = "No Content", responseCode = "204"),
+            @ApiResponse(description = "Not Found", responseCode = "404")
+    })
+    public @interface StandardOauthResponse {
+    }
+
 }
