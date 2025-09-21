@@ -20,10 +20,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.services.CategoryService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/categories")
+@Tag(name = "Categories", description = "Controller for Category")
 public class CategoryController {
 
     @Autowired

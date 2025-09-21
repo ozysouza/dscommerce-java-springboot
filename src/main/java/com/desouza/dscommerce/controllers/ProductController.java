@@ -26,10 +26,12 @@ import com.desouza.dscommerce.dto.product.ProductDTO.AdvancedChecks;
 import com.desouza.dscommerce.dto.product.ProductDTO.BasicChecks;
 import com.desouza.dscommerce.services.ProductService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/products")
+@Tag(name = "Products", description = "Controller for Product")
 @Validated({ BasicChecks.class, AdvancedChecks.class })
 public class ProductController {
 

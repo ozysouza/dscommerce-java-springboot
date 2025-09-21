@@ -22,10 +22,12 @@ import com.desouza.dscommerce.dto.user.UserInsertDTO;
 import com.desouza.dscommerce.dto.user.UserUpdateDTO;
 import com.desouza.dscommerce.services.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/users")
+@Tag(name = "Users", description = "Controller for User")
 public class UserController {
 
     @Autowired

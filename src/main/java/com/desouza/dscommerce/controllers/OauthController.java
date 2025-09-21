@@ -12,10 +12,12 @@ import com.desouza.dscommerce.dto.email.EmailDTO;
 import com.desouza.dscommerce.dto.user.NewPasswordDTO;
 import com.desouza.dscommerce.services.OauthService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/oauth")
+@Tag(name = "Oauth", description = "Controller for Authentication")
 public class OauthController {
 
     @Autowired

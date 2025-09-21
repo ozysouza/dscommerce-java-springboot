@@ -16,10 +16,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.desouza.dscommerce.dto.order.OrderDTO;
 import com.desouza.dscommerce.services.OrderService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/orders")
+@Tag(name = "Orders", description = "Controller for Order")
 public class OrderController {
 
     @Autowired
