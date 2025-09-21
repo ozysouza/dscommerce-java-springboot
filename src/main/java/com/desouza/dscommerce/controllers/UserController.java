@@ -29,6 +29,7 @@ import com.desouza.dscommerce.dto.user.UserUpdateDTO;
 import com.desouza.dscommerce.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -42,6 +43,7 @@ public class UserController {
 
     @Operation(summary = "Delete User by ID", description = "Returns no Content")
     @StandardDeleteResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -51,6 +53,7 @@ public class UserController {
 
     @Operation(summary = "Get Logged User", description = "Returns the Logged User")
     @StandardGetByIWithAutorizationdResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findMe() {
@@ -60,6 +63,7 @@ public class UserController {
 
     @Operation(summary = "Find User by ID", description = "Returns an User if it exists")
     @StandardGetByIWithAutorizationdResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
@@ -90,6 +94,7 @@ public class UserController {
 
     @Operation(summary = "Update User by ID", description = "Returns the updated User")
     @StandardPutAuthResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {

@@ -27,6 +27,7 @@ import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.services.CategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -56,6 +57,7 @@ public class CategoryController {
 
     @Operation(summary = "Create a new Category", description = "Return the created Category")
     @StandardPostAuthResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO) {
@@ -70,6 +72,7 @@ public class CategoryController {
 
     @Operation(summary = "Update Category by ID", description = "Returns the updated Category")
     @StandardPutAuthResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
@@ -79,6 +82,7 @@ public class CategoryController {
 
     @Operation(summary = "Delete Category by ID", description = "Returns no Content")
     @StandardDeleteResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {

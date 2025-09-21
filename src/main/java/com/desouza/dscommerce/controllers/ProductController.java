@@ -33,6 +33,7 @@ import com.desouza.dscommerce.dto.product.ProductDTO.BasicChecks;
 import com.desouza.dscommerce.services.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -66,6 +67,7 @@ public class ProductController {
 
     @Operation(summary = "Create a new Product", description = "Return the created Product")
     @StandardPostAuthResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {
@@ -80,6 +82,7 @@ public class ProductController {
 
     @Operation(summary = "Update Product by ID", description = "Returns the updated Product")
     @StandardPutAuthResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
@@ -89,6 +92,7 @@ public class ProductController {
 
     @Operation(summary = "Delete Product by ID", description = "Returns no Content")
     @StandardDeleteResponse
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
