@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.services.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -38,6 +40,8 @@ public class CategoryController {
         return ResponseEntity.ok(categoryList);
     }
 
+    @Operation(summary = "Find Category by ID", description = "Returns a Category if it exists")
+    @StandardGetByIdResponse
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
         CategoryDTO categoryDTO = categoryService.findById(id);

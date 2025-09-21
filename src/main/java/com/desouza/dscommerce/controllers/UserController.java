@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIWithAutorizationdResponse;
 import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.dto.user.UserInsertDTO;
 import com.desouza.dscommerce.dto.user.UserUpdateDTO;
 import com.desouza.dscommerce.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -41,6 +43,8 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Get Logged User", description = "Returns the Logged User")
+    @StandardGetByIWithAutorizationdResponse
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findMe() {
@@ -48,6 +52,8 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
+    @Operation(summary = "Find User by ID", description = "Returns an User if it exists")
+    @StandardGetByIWithAutorizationdResponse
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {

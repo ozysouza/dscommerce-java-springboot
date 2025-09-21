@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO.AdvancedChecks;
 import com.desouza.dscommerce.dto.product.ProductDTO.BasicChecks;
 import com.desouza.dscommerce.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -48,6 +50,8 @@ public class ProductController {
         return ResponseEntity.ok(productCatalogDTO);
     }
 
+    @Operation(summary = "Find Product by ID", description = "Returns a Product if it exists")
+    @StandardGetByIdResponse
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO productDTO = productService.findById(id);
