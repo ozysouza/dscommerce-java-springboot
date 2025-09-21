@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +39,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ProductCatalogDTO>> findCatalogProducts(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") String categoryId,
@@ -47,14 +48,14 @@ public class ProductController {
         return ResponseEntity.ok(productCatalogDTO);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO productDTO = productService.findById(id);
         return ResponseEntity.ok(productDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {
         productDTO = productService.insert(productDTO);
         URI uri = ServletUriComponentsBuilder
@@ -66,14 +67,14 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
         productDTO = productService.update(id, productDTO);
         return ResponseEntity.ok(productDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();

@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,33 +35,33 @@ public class UserController {
     private UserService userService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-    @GetMapping(value = "/me")
+    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findMe() {
         UserDTO userDTO = userService.getMe();
         return ResponseEntity.ok(userDTO);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         UserDTO userDTO = userService.findById(id);
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         Page<UserDTO> users = userService.findAll(pageable);
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
         UserDTO newDto = userService.insert(dto);
         URI uri = ServletUriComponentsBuilder
@@ -72,7 +73,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
         UserDTO newdto = userService.update(id, dto);
         return ResponseEntity.ok(newdto);

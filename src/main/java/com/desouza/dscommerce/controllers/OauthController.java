@@ -1,6 +1,7 @@
 package com.desouza.dscommerce.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,13 +24,13 @@ public class OauthController {
     @Autowired
     private OauthService oauthService;
 
-    @PostMapping(value = "/recover-token")
+    @PostMapping(value = "/recover-token", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createRecoverToken(@Valid @RequestBody EmailDTO emailDTO) {
         oauthService.createRecoverToken(emailDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/new-password")
+    @PutMapping(value = "/new-password", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveNewPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO) {
         oauthService.saveNewPassword(newPasswordDTO);
         return ResponseEntity.noContent().build();

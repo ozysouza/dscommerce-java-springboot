@@ -3,6 +3,7 @@ package com.desouza.dscommerce.controllers;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,14 +29,14 @@ public class OrderController {
     private OrderService orderService;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
         OrderDTO orderDTO = orderService.findById(id);
         return ResponseEntity.ok(orderDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderDTO orderDTO) {
         orderDTO = orderService.insert(orderDTO);
         URI uri = ServletUriComponentsBuilder

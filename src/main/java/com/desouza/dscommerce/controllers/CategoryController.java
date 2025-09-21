@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,20 +32,20 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) {
         Page<CategoryDTO> categoryList = categoryService.findAllPaged(pageable);
         return ResponseEntity.ok(categoryList);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
         CategoryDTO categoryDTO = categoryService.findById(id);
         return ResponseEntity.ok(categoryDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO) {
         categoryDTO = categoryService.insert(categoryDTO);
         URI uri = ServletUriComponentsBuilder
@@ -56,14 +57,14 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
         categoryDTO = categoryService.update(id, categoryDTO);
         return ResponseEntity.ok(categoryDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();
