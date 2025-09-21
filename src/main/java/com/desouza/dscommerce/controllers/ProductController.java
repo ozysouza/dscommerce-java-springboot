@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostAuthResponse;
 import com.desouza.dscommerce.dto.product.ProductCatalogDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO;
 import com.desouza.dscommerce.dto.product.ProductDTO.AdvancedChecks;
@@ -61,6 +62,8 @@ public class ProductController {
         return ResponseEntity.ok(productDTO);
     }
 
+    @Operation(summary = "Create a new Product", description = "Return the created Product")
+    @StandardPostAuthResponse
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {

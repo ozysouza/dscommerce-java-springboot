@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIWithAutorizationdResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostAuthResponse;
 import com.desouza.dscommerce.dto.order.OrderDTO;
 import com.desouza.dscommerce.services.OrderService;
 
@@ -39,6 +40,8 @@ public class OrderController {
         return ResponseEntity.ok(orderDTO);
     }
 
+    @Operation(summary = "Create a new Order", description = "Return the created Order")
+    @StandardPostAuthResponse
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderDTO orderDTO) {

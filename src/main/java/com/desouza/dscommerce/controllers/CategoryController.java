@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIdResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostAuthResponse;
 import com.desouza.dscommerce.dto.category.CategoryDTO;
 import com.desouza.dscommerce.services.CategoryService;
 
@@ -51,6 +52,8 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDTO);
     }
 
+    @Operation(summary = "Create a new Category", description = "Return the created Category")
+    @StandardPostAuthResponse
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO) {

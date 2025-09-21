@@ -50,4 +50,34 @@ public interface StandardApiResponses {
     public @interface StandardGetByIWithAutorizationdResponse {
     }
 
+    // =====================
+    // POST WITH AUTH (Create)
+    // =====================
+    @Target({ ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ApiResponses({
+            @ApiResponse(description = "Created", responseCode = "201"),
+            @ApiResponse(description = "Bad Request", responseCode = "400"),
+            @ApiResponse(description = "Unauthorized", responseCode = "401"),
+            @ApiResponse(description = "Forbidden", responseCode = "403"),
+            @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
+    })
+    public @interface StandardPostAuthResponse {
+    }
+
+    // =====================
+    // POST NO AUTH (Create)
+    // =====================
+    @Target({ ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ApiResponses({
+            @ApiResponse(description = "Created", responseCode = "201"),
+            @ApiResponse(description = "Bad Request", responseCode = "400"),
+            @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
+    })
+    public @interface StandardPostNoAuthResponse {
+    }
+
 }

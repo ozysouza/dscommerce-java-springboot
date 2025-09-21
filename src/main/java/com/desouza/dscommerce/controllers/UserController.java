@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetAllResponse;
 import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardGetByIWithAutorizationdResponse;
+import com.desouza.dscommerce.api.docs.StandardApiResponses.StandardPostNoAuthResponse;
 import com.desouza.dscommerce.dto.user.UserDTO;
 import com.desouza.dscommerce.dto.user.UserInsertDTO;
 import com.desouza.dscommerce.dto.user.UserUpdateDTO;
@@ -70,6 +71,8 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @Operation(summary = "Create a new User", description = "Return the created User")
+    @StandardPostNoAuthResponse
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
         UserDTO newDto = userService.insert(dto);
